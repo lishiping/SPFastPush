@@ -1,9 +1,9 @@
 //
 //  main.m
-//  SPPushVC
+//  SPFastPush
 //
-//  Created by uxin-lishiping on 16/12/29.
-//  Copyright © 2016年 lishiping. All rights reserved.
+//  Created by uxin-lishiping on 17/1/4.
+//  Copyright © 2017年 lishiping. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
