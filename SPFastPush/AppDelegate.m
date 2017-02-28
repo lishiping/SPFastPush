@@ -24,7 +24,7 @@
     
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:[[MainVC alloc]init]];
     self.window.rootViewController = nav;
-    self.window.windowLevel = 0.5;
+//    self.window.windowLevel = 0.5;
     
     [self.window makeKeyAndVisible];
     

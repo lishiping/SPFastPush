@@ -11,7 +11,7 @@
 /**
  使用宏定义快速push一个VC，dict字典里面可以传送复杂数据，并返回新生成的VC，例如：
  //SPFastPush_OpenVC(@"OtherVC", @{@"titleStr":@"other"});
- 
+ 实现原理是KVC动态赋值
  @param className VC类名
  @param dict      VC所需的参数
  
