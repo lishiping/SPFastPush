@@ -28,13 +28,20 @@
     [button setTitle:@"push" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
+    
+    
+    UIButton *testbutton = [UIButton buttonWithType:UIButtonTypeCustom];
+    testbutton.frame = CGRectMake(100, 200, 200, 50);
+    [testbutton setTitle:@"textBlock" forState:UIControlStateNormal];
+    [testbutton addTarget:self action:@selector(testButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:testbutton];
 }
 
 -(void)goBack
 {
     NSLog(@"点击");
     
-    SPFastPush_OpenVC(@"ThirdVC", @{@"titleName":@"第三个VC"});
+    SP_PUSH_VC(@"ThirdVC", @{@"titleName":@"第三个VC"});
 
     
 //    SPFastPush_PoPToLastVC;
@@ -42,6 +49,12 @@
 //    SPFastPush_PoPToVCAtIndex(0);
 //    SPFastPush_PoPToVCAtIndexWithAnimation(0);
 
+}
+
+-(void)testButtonClick:(id)sender
+{
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {

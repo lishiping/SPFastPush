@@ -36,16 +36,12 @@
 
 -(void)pushNext
 {
-    NSLog(@"点击");
-    SPFastPush_OpenVC(@"OtherVC", @{@"titleStr":@"other"});
-    
-//    OtherVC *otherVC = [[OtherVC alloc] init];
-//    [self.navigationController pushViewController:otherVC animated:YES];
+  SP_PUSH_VC(@"OtherVC", @{@"titleStr":@"other"});
 }
 
 -(void)pushSelf
 {
-    SPFastPush_OpenVC(@"MainVC", nil);
+    SP_PUSH_VC(@"MainVC", nil);
 
 }
 - (void)didReceiveMemoryWarning {

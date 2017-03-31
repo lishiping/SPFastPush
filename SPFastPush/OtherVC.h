@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface OtherVC : UIViewController
 
 @property(nonatomic,copy)NSString *titleStr;

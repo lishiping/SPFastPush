@@ -8,8 +8,19 @@
 
 #import "SPFastPush.h"
 
-#define isKindOf(x, cls)                [(x) isKindOfClass:[cls class]]         // 判断实例类型(含父类)
-#define DLOG(fmt, ...)           {NSLog((@"%s (line %d) " fmt), __FUNCTION__, __LINE__, ##__VA_ARGS__);}
+#define SPisKindOf(x, cls)                [(x) isKindOfClass:[cls class]]         // 判断实例类型(含父类)
+
+#if DEBUG
+
+#define SPDLOG(fmt, ...)           {NSLog((@"%s (line %d) " fmt), __FUNCTION__, __LINE__, ##__VA_ARGS__);}
+
+#else
+
+#define SPDLOG(fmt, ...)
+
+#endif
+
+
 
 @interface SPFastPush ()
 {
@@ -24,7 +35,7 @@
 
 + (void)pushVC:(UIViewController *)vc;
 {
-    if (!isKindOf(vc, UIViewController))
+    if (!SPisKindOf(vc, UIViewController))
     {
         return;
     }
@@ -34,7 +45,7 @@
         UINavigationController *navc = [[self class]topVC].navigationController;
         
         if (!navc) {
-            DLOG(@"no find NavigationController,can not push!!!")
+            SPDLOG(@"no find NavigationController,can not push!!!")
             return;
         }
         
@@ -52,16 +63,16 @@
     UIViewController *vc = [UIApplication sharedApplication].keyWindow.rootViewController;
     while (vc) {
         ret = vc;
-        if (isKindOf(vc, UINavigationController)) {
+        if (SPisKindOf(vc, UINavigationController)) {
             vc = [(UINavigationController *)vc visibleViewController];
-        } else if (isKindOf(vc, UITabBarController)) {
+        } else if (SPisKindOf(vc, UITabBarController)) {
             vc = [(UITabBarController *)vc selectedViewController];
         } else {
             vc = [vc presentedViewController];
         }
     }
     
-    return (isKindOf(ret, UIViewController) ? ret : nil);
+    return (SPisKindOf(ret, UIViewController) ? ret : nil);
 }
 
 //- (UINavigationController *)getCurrentNavigationController;
@@ -91,7 +102,7 @@
 }
 + (UIViewController *)createVC:(NSString *)className withParams:(NSDictionary *)params;
 {
-    if (!isKindOf(className, NSString)||className.length==0) {
+    if (!SPisKindOf(className, NSString)||className.length==0) {
         return nil;
     }
     
@@ -109,19 +120,19 @@
         
         ret = vc;
     } else {
-        DLOG(@"%@ class not Find!!!!!-----", className);
+        SPDLOG(@"%@ class not Find!!!!!-----", className);
     }
     return (ret);
 }
 
 + (id)object:(id)object kvc_setParams:(NSDictionary *)params;
 {
-    if (!isKindOf(params, NSDictionary) || (params.count < 1))
+    if (!SPisKindOf(params, NSDictionary) || (params.count < 1))
         return object;
     @try {
         [object setValuesForKeysWithDictionary:params];
     } @catch (NSException *exception) {
-        DLOG(@"KVC Set Value For Key error:%@", exception);
+        SPDLOG(@"KVC Set Value For Key error:%@", exception);
     } @finally {
     }
     return object;
@@ -151,21 +162,21 @@
         
         [vc.navigationController popToViewController:obj animated:animated];
     }
-    else
-    {
-        return;
-    }
 }
 
 + (void)popToVCWithClassName:(NSString *)className animated:(BOOL)animated
 {
-    if (!isKindOf(className, NSString)||className.length==0) {
+    if (!SPisKindOf(className, NSString)||className.length==0) {
         return;
     }
-    
     NSString *name = [className stringByReplacingOccurrencesOfString:@" " withString:@""];
     
     Class cls = NSClassFromString(name);
+    
+    if (!cls || ![cls isSubclassOfClass:[UIViewController class]])
+    {
+        return;
+    }
     
     UIViewController *vc = [[self class]topVC];
     //导航栈内一定要超过1个vc，否则不能pop
@@ -174,14 +185,12 @@
         NSArray *vcArr = vc.navigationController.viewControllers;
         
         for (UIViewController *vcobj in vcArr) {
-            if (isKindOf(vcobj, cls)) {
+            if (SPisKindOf(vcobj, cls)) {
                 
                 [vc.navigationController popToViewController:vcobj animated:animated];
             }
         }
     }
-    
-    return;
 }
 
 

@@ -9,47 +9,60 @@
 #import <UIKit/UIKit.h>
 
 /**
- 使用宏定义快速push一个VC，dict字典里面可以传送复杂数据，并返回新生成的VC，例如：
- //SPFastPush_OpenVC(@"OtherVC", @{@"titleStr":@"other"});
- 实现原理是KVC动态赋值
+ Using the macro definition quickly push a VC, traverse the navigation stack find current controller, use the push method of navigation controller, dictionaries can pass parameters, implementation principle is KVC dynamic assignment, and return to push the VC object
+ 
+ 使用宏定义快速push一个VC，原理是遍历当前控制器的导航栈，使用导航控制器push方法，dict字典里面可以传参数，实现原理是KVC动态赋值，并返回push产生的VC对象
+ 
+ 例如：//SP_PUSH_VC(@"OtherVC", @{@"titleStr":@"other"});
+
  @param className VC类名
  @param dict      VC所需的参数
  
  @return 返回VC对象
  */
-#define SPFastPush_OpenVC(className, dict)    [SPFastPush openVC:className withParams:(dict)]
+#define SP_PUSH_VC(className, dict)    [SPFastPush openVC:className withParams:(dict)]
+
 
 /**
+ return last VC
  返回上一个VC
  */
-#define SPFastPush_PopToLastVC    [SPFastPush goBack]
+#define SP_POP_TO_LAST_VC    [SPFastPush goBack]
+
 
 /**
- Navigationcontroler popto the index of viewcontrolers (navigationcontroler.viewcontrolers)
- 导航栈内返回指定位置的方法（无动画）
- @param index 导航栈元素索引
+ Navigationcontroler pop to the index of (navigationcontroler.viewcontrolers)
+ 
+ 导航控制器返回到指定VC对象的方法,通过索引位置找到导航栈内的VC对象并pop（无动画）
+ 
+ @param index 导航栈VC元素索引
  */
-#define SPFastPush_PopToVCAtIndex(index)    [SPFastPush popToVCAtIndex:(index) animated:NO]
+#define SP_POP_TO_VC_AT_INDEX(index)    [SPFastPush popToVCAtIndex:(index) animated:NO]
 
 /**
- 导航栈内返回指定位置的方法（有动画）
- @param index 导航栈元素索引
+ 导航控制器返回到指定VC对象的方法,通过索引位置找到导航栈内的VC对象并pop（有动画）
+ @param index 导航栈VC元素索引
  */
-#define SPFastPush_PopToVCAtIndexWithAnimation(index)    [SPFastPush popToVCAtIndex:(index) animated:YES]
+#define SP_POP_TO_VC_AT_INDEX_ANIMATION(index)    [SPFastPush popToVCAtIndex:(index) animated:YES]
+
 
 /**
- Navigationcontroler back to input of ClassName
- 导航栈返回到指定输入的类名（不带动画），如果一个导航栈里面有多个相同类的VC对象在里面则返回离根部最近的那个VC（导航栈里有相同类的实例对象通常不符合逻辑）
+ Navigationcontroler pop to VC,find VC object by ClassName in navigationcontroler.viewcontrolers.
+ 
+ 导航控制器返回到指定VC对象的方法,通过VC类名找到导航栈内的VC对象并pop，如果一个导航栈里面有多个相同类的VC对象在里面则返回离根部最近的那个VC（导航栈里有相同类的实例对象通常不符合逻辑）
+ 
  @param className 类名
  */
-#define SPFastPush_PopToVCByClassName(className)    [SPFastPush popToVCWithClassName:(className) animated:NO]
+#define SP_POP_TO_VC_BY_CLASSNAME(className)    [SPFastPush popToVCWithClassName:(className) animated:NO]
 
 /**
- Navigationcontroler back to input of ClassName
- 导航栈返回到指定输入的类名（带动画），如果一个导航栈里面有多个相同类的VC对象在里面则返回离根部最近的那个VC（导航栈里有相同类的实例对象通常不符合逻辑）
+ Navigationcontroler pop to VC,find VC object by ClassName in navigationcontroler.viewcontrolers.(with animation)
+ 
+ 导航控制器返回到指定VC对象的方法,通过VC类名找到导航栈内的VC对象并pop，如果一个导航栈里面有多个相同类的VC对象在里面则返回离根部最近的那个VC（导航栈里有相同类的实例对象通常不符合逻辑）
+ 
  @param className 类名
  */
-#define SPFastPush_PopToVCByClassNameWithAnimation(className)    [SPFastPush popToVCWithClassName:(className) animated:YES]
+#define SP_POP_TO_VC_BY_CLASSNAME_ANIMATION(className)    [SPFastPush popToVCWithClassName:(className) animated:YES]
 
 
 
