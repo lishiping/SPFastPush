@@ -1,9 +1,10 @@
 # SPFastPush
-navigationcontroler fast push VC,fast pop To VC
 
-#pod 'SPFastPush',                   # 加入SPFastPush
+#pod 'SPFastPush'                 
 
-#本公开库非常实用，Use Macro NavigationController push next VC，use KVC assign parameter，return current VC Object，and Fast Pop anther VC.
+#Use Macro NavigationController push next VC，use KVC assign parameter，return current VC Object，and Fast Pop anther VC.
+
+#本公开库非常实用，代替了经常需要写很多代码的需要
 
 #使用宏帮助导航控制器快速push下一个VC,利用KVC传入参数,也可以快速返回导航栈内指定的VC
 
