@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "SPFastPush"
-  s.version      = "0.0.6"
+  s.version      = "0.0.7"
   s.summary      = "Use Macro Fast push next VC,use KVC assign parameter,Fast Pop anther VC.使用宏帮助导航控制器快速push下一个VC,利用KVC传入参数,也可快速返回导航栈内指定VC"
 
 
@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = "6.0"
 
-  s.source       = { :git => "https://github.com/lishiping/SPFastPush.git", :tag => "0.0.6" }
+  s.source       = { :git => "https://github.com/lishiping/SPFastPush.git", :tag => s.version }
 
    s.source_files  = 'SPFastPush/SPFastPush/*.{h,m,mm,cpp,c}', 'SPFastPush/SPFastPush/*/*.{h,m,mm,cpp,c}'
    s.public_header_files = 'SPFastPush/SPFastPush/*.h', 'SPFastPush/SPFastPush/*/*.h'
