@@ -97,10 +97,10 @@
 
 #pragma mark - kvc
 
-+(UIViewController *)openVC:(NSString *)className withParams:(NSDictionary *)params;
++(UIViewController *)pushVCWithClassName:(NSString *)vcClassName params:(NSDictionary *)params
 {
     //创建当前类并加入属性
-    UIViewController *ret = [[self  class] createVC:className withParams:params];
+    UIViewController *ret = [[self  class] createVC:vcClassName withParams:params];
     
     if (ret) {
         [[self class] pushVC:ret];
@@ -146,7 +146,7 @@
     return object;
 }
 
-+ (void)goBack;
++ (void)popToLastVC
 {
     UIViewController *vc = [[self class]topVC];
     if (vc.navigationController.viewControllers.count>1)

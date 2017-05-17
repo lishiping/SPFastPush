@@ -28,14 +28,14 @@
  
  @return 返回VC对象
  */
-#define SP_PUSH_VC(className, dict)    [SPFastPush openVC:className withParams:(dict)]
+#define SP_PUSH_VC(className, dict)    [SPFastPush pushVCWithClassName:className params:(dict)]
 
 
 /**
  return last VC
  返回上一个VC
  */
-#define SP_POP_TO_LAST_VC    [SPFastPush goBack]
+#define SP_POP_TO_LAST_VC    [SPFastPush popToLastVC]
 
 
 /**
@@ -79,17 +79,17 @@
 /**
  创建VC并push到VC
  
- @param className 要创建VC的类名称
+ @param vcClassName 要创建VC的类名称
  @param params    传给VC的参数
  
  @return VC对象
  */
-+ (UIViewController *)openVC:(NSString *)className withParams:(NSDictionary *)params;
++ (UIViewController *)pushVCWithClassName:(NSString *)vcClassName params:(NSDictionary *)params;
 
 /**
  返回上一个VC
  */
-+ (void)goBack;
++ (void)popToLastVC;
 
 /**
  导航栈内返回指定位置的方法
