@@ -5,14 +5,15 @@
 //  Created by lishiping on 16/11/11.
 //  Copyright (c) 2016年 lishiping. All rights reserved.
 //
-//If you feel the WebView open source is of great help to you, please give the author some praise, recognition you give great encouragement, the author also hope you give the author other open source libraries some praise, the author will release better open source library for you again
-//如果您感觉本开源WebView对您很有帮助，请给作者点个赞，您的认可给作者极大的鼓励，也希望您给作者其他的开源库点个赞，作者还会再发布更好的开源库给大家
+//If you think this open source library is of great help to you, please open the URL to click the Star,your approbation can encourage me, the author will publish the better open source library for guys again
+//如果您认为本开源库对您很有帮助，请打开URL给作者点个赞，您的认可给作者极大的鼓励，作者还会发布更好的开源库给大家
 
 //github address//https://github.com/lishiping/SPWebView
 //github address//https://github.com/lishiping/SPDebugBar
 //github address//https://github.com/lishiping/SPFastPush
 //github address//https://github.com/lishiping/SPMacro
 //github address//https://github.com/lishiping/SafeData
+//github address//https://github.com/lishiping/SPCategory
 
 #import <UIKit/UIKit.h>
 
@@ -106,6 +107,35 @@
  @param animated  是否需要动画
  */
 +(void)popToVCWithClassName:(NSString*)className animated:(BOOL)animated;
+
+
+/**
+Get the current navigation controller by  traversing
+ 遍历获得当前VC的导航控制器
+
+ @return 导航控制器对象
+ */
++(UINavigationController *)getCurrentNavC;
+
+
+/**
+ Get the current display controller object
+ 获得当前显示的控制器对象
+
+ @return vc object
+ */
++ (UIViewController *)topVC;
+
+
+
+/**
+ Get rootViewController
+ 获取APP根视图控制器
+
+ @return rootViewController
+ */
++ (UIViewController *)rootVC;
+
 
 @end
 

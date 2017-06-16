@@ -2,32 +2,41 @@
 //  SPFastPush.m
 //  e-mail:83118274@qq.com
 //
-//  Created by lishping on 16/11/11.
+//  Created by lishiping on 16/11/11.
 //  Copyright (c) 2016年 lishiping. All rights reserved.
 //
-//If you feel the WebView open source is of great help to you, please give the author some praise, recognition you give great encouragement, the author also hope you give the author other open source libraries some praise, the author will release better open source library for you again
-//如果您感觉本开源WebView对您很有帮助，请给作者点个赞，您的认可给作者极大的鼓励，也希望您给作者其他的开源库点个赞，作者还会再发布更好的开源库给大家
+//If you think this open source library is of great help to you, please open the URL to click the Star,your approbation can encourage me, the author will publish the better open source library for guys again
+//如果您认为本开源库对您很有帮助，请打开URL给作者点个赞，您的认可给作者极大的鼓励，作者还会发布更好的开源库给大家
 
 //github address//https://github.com/lishiping/SPWebView
 //github address//https://github.com/lishiping/SPDebugBar
 //github address//https://github.com/lishiping/SPFastPush
 //github address//https://github.com/lishiping/SPMacro
 //github address//https://github.com/lishiping/SafeData
+//github address//https://github.com/lishiping/SPCategory
 
 #import "SPFastPush.h"
 
-#define SPisKindOf(x, cls)                [(x) isKindOfClass:[cls class]]         // 判断实例类型(含父类)
+#define SP_IS_KIND_OF(obj, cls) [(obj) isKindOfClass:[cls class]]
 
 #if DEBUG
 
-#define SPDLOG(fmt, ...)           {NSLog((@"%s (line %d) " fmt), __FUNCTION__, __LINE__, ##__VA_ARGS__);}
+#define SP_LOG(...) NSLog(__VA_ARGS__);
+
+#define ASSERT(obj)               assert((obj))
+
+#define ASSERT_CLASS(obj, cls) ASSERT((obj) && SP_IS_KIND_OF(obj,cls))//断言实例有值和类型
+
 
 #else
 
-#define SPDLOG(fmt, ...)
+#define SP_LOG(...)
+
+#define ASSERT(obj)
+
+#define ASSERT_CLASS(obj, cls)
 
 #endif
-
 
 
 @interface SPFastPush ()
@@ -39,63 +48,7 @@
 @implementation SPFastPush
 
 
-#pragma mark - Navigation
-
-+ (void)pushVC:(UIViewController *)vc;
-{
-    if (!SPisKindOf(vc, UIViewController))
-    {
-        return;
-    }
-    else
-    {
-        //find NavigationController
-        UINavigationController *navc = [[self class]topVC].navigationController;
-        
-        if (!navc) {
-            SPDLOG(@"no find NavigationController,can not push!!!")
-            return;
-        }
-        
-        if (navc.viewControllers.count) {
-            vc.hidesBottomBarWhenPushed = YES;
-        }
-        
-        [navc pushViewController:vc animated:YES];
-    }
-}
-
-+ (UIViewController *)topVC;
-{
-    UIViewController *ret = nil;
-    UIViewController *vc = [UIApplication sharedApplication].keyWindow.rootViewController;
-    while (vc) {
-        ret = vc;
-        if (SPisKindOf(vc, UINavigationController)) {
-            vc = [(UINavigationController *)vc visibleViewController];
-        } else if (SPisKindOf(vc, UITabBarController)) {
-            vc = [(UITabBarController *)vc selectedViewController];
-        } else {
-            vc = [vc presentedViewController];
-        }
-    }
-    
-    return (SPisKindOf(ret, UIViewController) ? ret : nil);
-}
-
-//- (UINavigationController *)getCurrentNavigationController;
-//{
-//    UINavigationController *ret = (UINavigationController *)[[self class] rootVC];
-//    if (isKindOf(ret, UINavigationController)) {
-//        return ret;
-//    }
-//    else if (isKindOf(ret, UITabBarController)) {
-//        ret = ((UITabBarController *)ret).selectedViewController;
-//    }
-//    return (isKindOf(ret, UINavigationController) ? ret : nil);
-//}
-
-#pragma mark - kvc
+#pragma mark - create & kvc
 
 +(UIViewController *)pushVCWithClassName:(NSString *)vcClassName params:(NSDictionary *)params
 {
@@ -108,9 +61,13 @@
     
     return (ret);
 }
+
 + (UIViewController *)createVC:(NSString *)className withParams:(NSDictionary *)params;
 {
-    if (!SPisKindOf(className, NSString)||className.length==0) {
+    ASSERT_CLASS(className, NSString);
+
+    if (!SP_IS_KIND_OF(className, NSString)||className.length==0) {
+        SP_LOG(@"className string error!!!!!-----");
         return nil;
     }
     
@@ -118,63 +75,106 @@
     NSString *name = [className stringByReplacingOccurrencesOfString:@" " withString:@""];
     
     Class cls = NSClassFromString(name);
+    
     if (cls && [cls isSubclassOfClass:[UIViewController class]]) {
         
         // create viewController
         UIViewController *vc = [[cls alloc] init];
         
         // kvc set params;
-        vc = [[self class] object:vc kvc_setParams:params];
+        ret = [[self class] object:vc kvc_setParams:params];
         
-        ret = vc;
     } else {
-        SPDLOG(@"%@ class not Find!!!!!-----", className);
+        SP_LOG(@"%@ class not Find!!!!!-----", className);
     }
     return (ret);
 }
 
 + (id)object:(id)object kvc_setParams:(NSDictionary *)params;
 {
-    if (!SPisKindOf(params, NSDictionary) || (params.count < 1))
+    if (!SP_IS_KIND_OF(params, NSDictionary) || (params.count < 1))
+    {
         return object;
+    }
+    
     @try {
         [object setValuesForKeysWithDictionary:params];
     } @catch (NSException *exception) {
-        SPDLOG(@"KVC Set Value For Key error:%@", exception);
+        SP_LOG(@"KVC Set Value For Key error:%@", exception);
     } @finally {
     }
     return object;
 }
 
+#pragma mark - Navigation
+
++ (void)pushVC:(UIViewController *)vc;
+{
+    ASSERT_CLASS(vc, UIViewController);
+
+    if (!SP_IS_KIND_OF(vc, UIViewController))
+    {
+        return;
+    }
+    else
+    {
+        //find NavigationController
+        UINavigationController *navc = [[self class] getCurrentNavC];
+        
+        if (!navc) {
+            SP_LOG(@"no find NavigationController,can not push!!!")
+            return;
+        }
+        
+        if (navc.viewControllers.count) {
+            vc.hidesBottomBarWhenPushed = YES;
+        }
+        
+        [navc pushViewController:vc animated:YES];
+    }
+}
+
 + (void)popToLastVC
 {
-    UIViewController *vc = [[self class]topVC];
-    if (vc.navigationController.viewControllers.count>1)
+    UINavigationController *navc = [[self class] getCurrentNavC];
+    if (navc.viewControllers.count>1)
     {
-        [vc.navigationController popViewControllerAnimated:YES];
+        [navc popViewControllerAnimated:YES];
     }
 }
 
 + (void)popToVCAtIndex:(NSInteger)index animated:(BOOL)animated
 {
-    UIViewController *vc = [[self class]topVC];
+    UINavigationController *navc = [[self class] getCurrentNavC];
     //导航栈内一定要超过1个vc，否则不能pop
-    if (index>=0&&vc.navigationController.viewControllers.count>1&&vc.navigationController.viewControllers.count>index)
+    if (index>=0 && navc.viewControllers.count>1 && navc.viewControllers.count>index)
     {
         //从导航栈顶跳到栈顶不成立，所以返回
-        if (vc.navigationController.viewControllers.count-1==index) {
+        if (navc.viewControllers.count-1==index) {
             return;
         }
         
-        UIViewController *obj = [vc.navigationController.viewControllers objectAtIndex:index];
+        UIViewController *obj = [navc.viewControllers objectAtIndex:index];
         
-        [vc.navigationController popToViewController:obj animated:animated];
+        ASSERT_CLASS(obj, UIViewController);
+
+        if (!navc && obj) {
+            [navc popToViewController:obj animated:animated];
+        }
+        else
+        {
+            SP_LOG(@"no find NavigationController,can not push!!!")
+            return;
+        }
     }
 }
 
 + (void)popToVCWithClassName:(NSString *)className animated:(BOOL)animated
 {
-    if (!SPisKindOf(className, NSString)||className.length==0) {
+    ASSERT_CLASS(className, NSString);
+
+    if (!SP_IS_KIND_OF(className, NSString)||className.length==0) {
+        SP_LOG(@"className string error!!!!!-----");
         return;
     }
     NSString *name = [className stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -183,22 +183,82 @@
     
     if (!cls || ![cls isSubclassOfClass:[UIViewController class]])
     {
+        SP_LOG(@"%@ class not Find!!!!!-----", className);
         return;
     }
     
-    UIViewController *vc = [[self class]topVC];
+    UINavigationController *navc = [[self class] getCurrentNavC];
+    
     //导航栈内一定要超过1个vc，否则不能pop
-    if (vc.navigationController.viewControllers.count>1)
+    if (navc.viewControllers.count>1)
     {
-        NSArray *vcArr = vc.navigationController.viewControllers;
+        NSArray *vcArr = navc.viewControllers;
         
         for (UIViewController *vcobj in vcArr) {
-            if (SPisKindOf(vcobj, cls)) {
+            if (SP_IS_KIND_OF(vcobj, cls)) {
                 
-                [vc.navigationController popToViewController:vcobj animated:animated];
+                [navc popToViewController:vcobj animated:animated];
+                return;
             }
         }
     }
+}
+
+#pragma mark -get VC
++(UINavigationController *)getCurrentNavC
+{
+    UINavigationController *navc = [[self class] topVC].navigationController;
+    
+    ASSERT_CLASS(navc, UINavigationController);
+    
+    return (SP_IS_KIND_OF(navc, UINavigationController) ? navc : nil);
+}
+
++ (UIViewController *)topVC
+{
+    UIViewController *ret = nil;
+    UIViewController *vc = [[self class] rootVC];
+    while (vc) {
+        ret = vc;
+        if (SP_IS_KIND_OF(ret, UINavigationController))
+        {
+            vc = [(UINavigationController *)vc visibleViewController];
+        } else if (SP_IS_KIND_OF(ret, UITabBarController))
+        {
+            vc = [(UITabBarController *)vc selectedViewController];
+        } else
+        {
+            vc = [vc presentedViewController];
+        }
+    }
+    
+    ASSERT_CLASS(ret, UIViewController);
+    
+    return (SP_IS_KIND_OF(ret, UIViewController) ? ret : nil);
+}
+
+
++ (UIViewController *)rootVC
+{
+    UIViewController  *vc = [UIApplication sharedApplication].keyWindow.rootViewController;
+    
+    if (!vc) {
+        
+        NSArray *arr = [[UIApplication sharedApplication] windows];
+        UIWindow *window = nil;
+        
+        if (arr && arr.count) {
+            window = [arr objectAtIndex:0];
+        }
+        
+        if (window.rootViewController) {
+            vc = window.rootViewController;
+        }
+    }
+    
+    ASSERT(vc);
+    
+    return (vc);
 }
 
 
