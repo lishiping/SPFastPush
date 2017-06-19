@@ -74,6 +74,33 @@
 #define SP_POP_TO_VC_BY_CLASSNAME_ANIMATION(className)    [SPFastPush popToVCWithClassName:(className) animated:YES]
 
 
+/**
+ Get the current navigation controller by  traversing
+ 遍历获得当前VC的导航控制器
+ 
+ @return 导航控制器对象
+ */
+#define SP_GET_CURRENT_NAVC    [SPFastPush getCurrentNavC]
+
+
+/**
+ Get the current display controller object
+ 获得当前显示的控制器对象
+ 
+ @return vc object
+ */
+#define SP_GET_TOP_VC    [SPFastPush topVC]
+
+
+/**
+ Get rootViewController
+ 获取APP根视图控制器
+ 
+ @return rootViewController
+ */
+#define SP_GET_ROOT_VC    [SPFastPush rootVC]
+
+
 
 @interface SPFastPush : NSObject
 

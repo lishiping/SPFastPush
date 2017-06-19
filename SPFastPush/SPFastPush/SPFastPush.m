@@ -23,9 +23,9 @@
 
 #define SP_LOG(...) NSLog(__VA_ARGS__);
 
-#define ASSERT(obj)               assert((obj))
+#define SP_ASSERT(obj)               assert((obj))
 
-#define ASSERT_CLASS(obj, cls) ASSERT((obj) && SP_IS_KIND_OF(obj,cls))//断言实例有值和类型
+#define SP_ASSERT_CLASS(obj, cls)  SP_ASSERT((obj) && SP_IS_KIND_OF(obj,cls))//断言实例有值和类型
 
 
 #else
@@ -55,6 +55,8 @@
     //创建当前类并加入属性
     UIViewController *ret = [[self  class] createVC:vcClassName withParams:params];
     
+    SP_ASSERT(ret);
+    
     if (ret) {
         [[self class] pushVC:ret];
     }
@@ -64,7 +66,7 @@
 
 + (UIViewController *)createVC:(NSString *)className withParams:(NSDictionary *)params;
 {
-    ASSERT_CLASS(className, NSString);
+    SP_ASSERT_CLASS(className, NSString);
 
     if (!SP_IS_KIND_OF(className, NSString)||className.length==0) {
         SP_LOG(@"className string error!!!!!-----");
@@ -110,7 +112,7 @@
 
 + (void)pushVC:(UIViewController *)vc;
 {
-    ASSERT_CLASS(vc, UIViewController);
+    SP_ASSERT_CLASS(vc, UIViewController);
 
     if (!SP_IS_KIND_OF(vc, UIViewController))
     {
@@ -156,7 +158,7 @@
         
         UIViewController *obj = [navc.viewControllers objectAtIndex:index];
         
-        ASSERT_CLASS(obj, UIViewController);
+        SP_ASSERT_CLASS(obj, UIViewController);
 
         if (!navc && obj) {
             [navc popToViewController:obj animated:animated];
@@ -171,7 +173,7 @@
 
 + (void)popToVCWithClassName:(NSString *)className animated:(BOOL)animated
 {
-    ASSERT_CLASS(className, NSString);
+    SP_ASSERT_CLASS(className, NSString);
 
     if (!SP_IS_KIND_OF(className, NSString)||className.length==0) {
         SP_LOG(@"className string error!!!!!-----");
@@ -195,6 +197,9 @@
         NSArray *vcArr = navc.viewControllers;
         
         for (UIViewController *vcobj in vcArr) {
+            
+            SP_ASSERT_CLASS(vcobj , UIViewController);
+
             if (SP_IS_KIND_OF(vcobj, cls)) {
                 
                 [navc popToViewController:vcobj animated:animated];
@@ -209,7 +214,7 @@
 {
     UINavigationController *navc = [[self class] topVC].navigationController;
     
-    ASSERT_CLASS(navc, UINavigationController);
+    SP_ASSERT_CLASS(navc, UINavigationController);
     
     return (SP_IS_KIND_OF(navc, UINavigationController) ? navc : nil);
 }
@@ -232,7 +237,7 @@
         }
     }
     
-    ASSERT_CLASS(ret, UIViewController);
+    SP_ASSERT_CLASS(ret, UIViewController);
     
     return (SP_IS_KIND_OF(ret, UIViewController) ? ret : nil);
 }
@@ -245,18 +250,16 @@
     if (!vc) {
         
         NSArray *arr = [[UIApplication sharedApplication] windows];
-        UIWindow *window = nil;
         
         if (arr && arr.count) {
-            window = [arr objectAtIndex:0];
-        }
-        
-        if (window.rootViewController) {
-            vc = window.rootViewController;
+            UIWindow *window = [arr objectAtIndex:0];
+            if (window.rootViewController) {
+                vc = window.rootViewController;
+            }
         }
     }
     
-    ASSERT(vc);
+    SP_ASSERT(vc);
     
     return (vc);
 }
