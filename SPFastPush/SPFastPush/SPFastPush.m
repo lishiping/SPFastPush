@@ -32,9 +32,9 @@
 
 #define SP_LOG(...)
 
-#define ASSERT(obj)
+#define SP_ASSERT(obj)
 
-#define ASSERT_CLASS(obj, cls)
+#define SP_ASSERT_CLASS(obj, cls)
 
 #endif
 
