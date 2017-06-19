@@ -42,6 +42,10 @@
 -(void)pushSelf
 {
     SP_PUSH_VC(@"MainVC", nil);
+    
+//    [SPFastPush presentViewController:@"OtherVC" params:nil animated:NO];
+    
+//    SP_PRESENT_VC(@"OtherVC", nil);
 
 }
 - (void)didReceiveMemoryWarning {

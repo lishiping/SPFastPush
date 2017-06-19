@@ -43,7 +43,7 @@
     
     SP_PUSH_VC(@"ThirdVC", @{@"titleName":@"第三个VC"});
 
-    
+//    SP_DISMISS_VC;
 //    SPFastPush_PoPToLastVC;
     
 //    SPFastPush_PoPToVCAtIndex(0);

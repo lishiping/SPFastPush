@@ -19,6 +19,13 @@
 
 #define SP_IS_KIND_OF(obj, cls) [(obj) isKindOfClass:[cls class]]
 
+// (is main thread)判断是否主线程
+#define SP_IS_MAIN_THREAD                [NSThread isMainThread]
+
+// (run in main thread)使block在主线程中运行
+#define SP_RUN_MAIN_THREAD(block)    if (SP_IS_MAIN_THREAD) {(block);} else {dispatch_async(dispatch_get_main_queue(), ^{(block);});}
+
+
 #if DEBUG
 
 #define SP_LOG(...) NSLog(__VA_ARGS__);
@@ -108,6 +115,22 @@
     return object;
 }
 
++(UIViewController *)presentViewController:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated
+{
+    //创建当前类并加入属性
+    UIViewController *ret = [[self  class] createVC:vcClassName withParams:params];
+    
+    UIViewController *topVC = [[self class] topVC];
+    
+    SP_ASSERT(ret);
+    
+    if (ret && topVC) {
+        SP_RUN_MAIN_THREAD([topVC presentViewController:ret animated:animated completion:nil]);
+    }
+    
+    return  ret;
+}
+
 #pragma mark - Navigation
 
 + (void)pushVC:(UIViewController *)vc;
@@ -132,7 +155,7 @@
             vc.hidesBottomBarWhenPushed = YES;
         }
         
-        [navc pushViewController:vc animated:YES];
+        SP_RUN_MAIN_THREAD([navc pushViewController:vc animated:YES]);
     }
 }
 
@@ -141,7 +164,7 @@
     UINavigationController *navc = [[self class] getCurrentNavC];
     if (navc.viewControllers.count>1)
     {
-        [navc popViewControllerAnimated:YES];
+        SP_RUN_MAIN_THREAD([navc popViewControllerAnimated:YES]);
     }
 }
 
@@ -161,7 +184,7 @@
         SP_ASSERT_CLASS(obj, UIViewController);
 
         if (!navc && obj) {
-            [navc popToViewController:obj animated:animated];
+            SP_RUN_MAIN_THREAD([navc popToViewController:obj animated:animated]);
         }
         else
         {
@@ -202,14 +225,24 @@
 
             if (SP_IS_KIND_OF(vcobj, cls)) {
                 
-                [navc popToViewController:vcobj animated:animated];
+                SP_RUN_MAIN_THREAD([navc popToViewController:vcobj animated:animated]);
                 return;
             }
         }
     }
 }
 
-#pragma mark -get VC
+
++ (void)dismissVCAnimated:(BOOL)animated
+{
+    UIViewController *vc = [[self class] getPresentingVC];
+    if (vc)
+    {
+        SP_RUN_MAIN_THREAD([vc dismissViewControllerAnimated:animated completion:nil]);
+    }
+}
+
+#pragma mark - get VC
 +(UINavigationController *)getCurrentNavC
 {
     UINavigationController *navc = [[self class] topVC].navigationController;
@@ -217,6 +250,26 @@
     SP_ASSERT_CLASS(navc, UINavigationController);
     
     return (SP_IS_KIND_OF(navc, UINavigationController) ? navc : nil);
+}
+
++(UIViewController *)getPresentingVC
+{
+    UIViewController *ret = nil;
+    UIViewController *topVC = [[self class] topVC];
+    if (topVC.presentingViewController) {
+        ret = topVC.presentingViewController;
+    }
+    
+    if (!ret) {
+        
+        if (topVC.navigationController) {
+            ret  =  topVC.navigationController.presentingViewController;
+        }
+    }
+    
+    SP_ASSERT_CLASS(ret, UIViewController);
+    
+    return ret;
 }
 
 + (UIViewController *)topVC

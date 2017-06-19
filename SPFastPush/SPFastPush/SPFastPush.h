@@ -17,6 +17,9 @@
 
 #import <UIKit/UIKit.h>
 
+
+/*********************push pop************************/
+
 /**
  Using the macro definition quickly push a VC, traverse the navigation stack find current controller, use the push method of navigation controller, dictionaries can pass parameters, implementation principle is KVC dynamic assignment, and return to push the VC object
  
@@ -73,6 +76,39 @@
  */
 #define SP_POP_TO_VC_BY_CLASSNAME_ANIMATION(className)    [SPFastPush popToVCWithClassName:(className) animated:YES]
 
+
+
+/*********************present dismiss************************/
+
+/**
+ Using the macro definition quickly present a VC, get current controller by traversing, dictionaries can pass parameters, implementation principle is KVC dynamic assignment, and return the VC object
+ 
+ 使用宏定义快速present一个VC，原理是遍历得到当前控制器，present 一个新的VC，dict字典里面可以传参数，实现原理是KVC动态赋值
+ 
+ 例如：//SP_PUSH_VC(@"OtherVC", @{@"titleStr":@"other"});
+ 
+ @param className VC类名
+ @param dict      VC所需的参数
+ 
+ @return 返回VC对象
+ */
+#define SP_PRESENT_VC(className, dict)    [SPFastPush presentViewController:className params:(dict) animated:YES]
+
+#define SP_PRESENT_VC_NO_ANIMATED(className, dict)    [SPFastPush presentViewController:className params:(dict) animated:NO]
+
+
+/**
+ dismissViewController Animated
+ 收回弹出的VC
+
+ @return vc object
+ */
+#define SP_DISMISS_VC   [SPFastPush dismissVCAnimated:YES]
+
+#define SP_DISMISS_VC_NO_ANIMATED    [SPFastPush dismissVCAnimated:NO]
+
+
+/*********************get Navc topVC rootVC************************/
 
 /**
  Get the current navigation controller by  traversing
@@ -137,12 +173,35 @@
 
 
 /**
+ 创建一个VC，并使用KVC赋值，然后弹出
+
+ @param vcClassName vc类名
+ @param params 赋值参数
+ @param animated 是否动画
+ @return 返回弹出的VC对象
+ */
++(UIViewController *)presentViewController:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated;
+
+/**
+ 收回弹出的VC
+ */
++ (void)dismissVCAnimated:(BOOL)animated;
+
+/**
 Get the current navigation controller by  traversing
  遍历获得当前VC的导航控制器
 
  @return 导航控制器对象
  */
 +(UINavigationController *)getCurrentNavC;
+
+/**
+ Get the current PresentingViewController by  traversing
+ 遍历获得弹出当前VC的父VC
+ 
+ @return 导航控制器对象
+ */
++(UIViewController *)getPresentingVC;
 
 
 /**
@@ -152,7 +211,6 @@ Get the current navigation controller by  traversing
  @return vc object
  */
 + (UIViewController *)topVC;
-
 
 
 /**
