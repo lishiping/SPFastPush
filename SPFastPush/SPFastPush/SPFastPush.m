@@ -28,7 +28,7 @@
 
 #if DEBUG
 
-#define SP_LOG(...) NSLog(__VA_ARGS__);
+#define SP_LOG(...) NSLog(__VA_ARGS__)
 
 #define SP_ASSERT(obj)               assert((obj))
 
@@ -55,7 +55,7 @@
 @implementation SPFastPush
 
 
-#pragma mark - create & kvc
+#pragma mark - push & pop
 
 +(UIViewController *)pushVCWithClassName:(NSString *)vcClassName params:(NSDictionary *)params
 {
@@ -74,7 +74,7 @@
 + (UIViewController *)createVC:(NSString *)className withParams:(NSDictionary *)params;
 {
     SP_ASSERT_CLASS(className, NSString);
-
+    
     if (!SP_IS_KIND_OF(className, NSString)||className.length==0) {
         SP_LOG(@"className string error!!!!!-----");
         return nil;
@@ -101,68 +101,47 @@
 
 + (id)object:(id)object kvc_setParams:(NSDictionary *)params;
 {
-    if (!SP_IS_KIND_OF(params, NSDictionary) || (params.count < 1))
+    if (SP_IS_KIND_OF(params, NSDictionary) && (params.count>0))
     {
-        return object;
+        @try {
+            [object setValuesForKeysWithDictionary:params];
+        } @catch (NSException *exception) {
+            SP_LOG(@"KVC Set Value For Key error:%@", exception);
+        } @finally {
+        }
     }
     
-    @try {
-        [object setValuesForKeysWithDictionary:params];
-    } @catch (NSException *exception) {
-        SP_LOG(@"KVC Set Value For Key error:%@", exception);
-    } @finally {
-    }
     return object;
 }
-
-+(UIViewController *)presentViewController:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated
-{
-    //创建当前类并加入属性
-    UIViewController *ret = [[self  class] createVC:vcClassName withParams:params];
-    
-    UIViewController *topVC = [[self class] topVC];
-    
-    SP_ASSERT(ret);
-    
-    if (ret && topVC) {
-        SP_RUN_MAIN_THREAD([topVC presentViewController:ret animated:animated completion:nil]);
-    }
-    
-    return  ret;
-}
-
-#pragma mark - Navigation
 
 + (void)pushVC:(UIViewController *)vc;
 {
     SP_ASSERT_CLASS(vc, UIViewController);
-
-    if (!SP_IS_KIND_OF(vc, UIViewController))
-    {
-        return;
-    }
-    else
+    
+    if (SP_IS_KIND_OF(vc, UIViewController))
     {
         //find NavigationController
         UINavigationController *navc = [[self class] getCurrentNavC];
         
-        if (!navc) {
-            SP_LOG(@"no find NavigationController,can not push!!!")
+        if (navc) {
+            if (navc.viewControllers.count) {
+                vc.hidesBottomBarWhenPushed = YES;
+            }
+            
+            SP_RUN_MAIN_THREAD([navc pushViewController:vc animated:YES]);
+            
+        }else
+        {
+            SP_LOG(@"no find NavigationController,can not push!!!");
             return;
         }
-        
-        if (navc.viewControllers.count) {
-            vc.hidesBottomBarWhenPushed = YES;
-        }
-        
-        SP_RUN_MAIN_THREAD([navc pushViewController:vc animated:YES]);
     }
 }
 
 + (void)popToLastVC
 {
     UINavigationController *navc = [[self class] getCurrentNavC];
-    if (navc.viewControllers.count>1)
+    if (navc && navc.viewControllers.count>1)
     {
         SP_RUN_MAIN_THREAD([navc popViewControllerAnimated:YES]);
     }
@@ -170,9 +149,11 @@
 
 + (void)popToVCAtIndex:(NSInteger)index animated:(BOOL)animated
 {
+    SP_ASSERT(index>=0);
+    
     UINavigationController *navc = [[self class] getCurrentNavC];
     //导航栈内一定要超过1个vc，否则不能pop
-    if (index>=0 && navc.viewControllers.count>1 && navc.viewControllers.count>index)
+    if (navc && index>=0 && navc.viewControllers.count>1 && navc.viewControllers.count>index)
     {
         //从导航栈顶跳到栈顶不成立，所以返回
         if (navc.viewControllers.count-1==index) {
@@ -182,22 +163,26 @@
         UIViewController *obj = [navc.viewControllers objectAtIndex:index];
         
         SP_ASSERT_CLASS(obj, UIViewController);
-
-        if (!navc && obj) {
+        
+        if (obj) {
             SP_RUN_MAIN_THREAD([navc popToViewController:obj animated:animated]);
         }
         else
         {
-            SP_LOG(@"no find NavigationController,can not push!!!")
+            SP_LOG(@"no find NavigationController,can not push!!!");
             return;
         }
+    }
+    else
+    {
+        SP_LOG(@"can not pop!!!");
     }
 }
 
 + (void)popToVCWithClassName:(NSString *)className animated:(BOOL)animated
 {
     SP_ASSERT_CLASS(className, NSString);
-
+    
     if (!SP_IS_KIND_OF(className, NSString)||className.length==0) {
         SP_LOG(@"className string error!!!!!-----");
         return;
@@ -215,14 +200,14 @@
     UINavigationController *navc = [[self class] getCurrentNavC];
     
     //导航栈内一定要超过1个vc，否则不能pop
-    if (navc.viewControllers.count>1)
+    if (navc && navc.viewControllers.count>1)
     {
         NSArray *vcArr = navc.viewControllers;
         
         for (UIViewController *vcobj in vcArr) {
             
             SP_ASSERT_CLASS(vcobj , UIViewController);
-
+            
             if (SP_IS_KIND_OF(vcobj, cls)) {
                 
                 SP_RUN_MAIN_THREAD([navc popToViewController:vcobj animated:animated]);
@@ -232,6 +217,23 @@
     }
 }
 
+#pragma mark - present & dismiss
+
++(UIViewController *)presentViewController:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated
+{
+    //创建当前类并加入属性
+    UIViewController *ret = [[self  class] createVC:vcClassName withParams:params];
+    
+    UIViewController *topVC = [[self class] topVC];
+    
+    SP_ASSERT(ret);
+    
+    if (ret && topVC) {
+        SP_RUN_MAIN_THREAD([topVC presentViewController:ret animated:animated completion:nil]);
+    }
+    
+    return  ret;
+}
 
 + (void)dismissVCAnimated:(BOOL)animated
 {
@@ -241,6 +243,7 @@
         SP_RUN_MAIN_THREAD([vc dismissViewControllerAnimated:animated completion:nil]);
     }
 }
+
 
 #pragma mark - get VC
 +(UINavigationController *)getCurrentNavC
@@ -263,7 +266,11 @@
     if (!ret) {
         
         if (topVC.navigationController) {
-            ret  =  topVC.navigationController.presentingViewController;
+            UIViewController *tempVC  =  topVC.navigationController.presentingViewController;
+            
+            if (tempVC) {
+                ret = tempVC;
+            }
         }
     }
     
