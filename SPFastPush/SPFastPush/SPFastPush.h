@@ -39,7 +39,18 @@
  return last VC
  返回上一个VC
  */
-#define SP_POP_TO_LAST_VC    [SPFastPush popToLastVC]
+#define SP_POP_TO_LAST_VC    [SPFastPush popToLastVCWithAnimated:YES]
+
+#define SP_POP_TO_LAST_VC_NO_ANIMATED    [SPFastPush popToLastVCWithAnimated:NO]
+
+
+/**
+ pop to root viewcontroller
+ 返回到导航栈根视图控制器
+ */
+#define SP_POP_TO_ROOT_VC    [SPFastPush popToRootVCWithAnimated:NO]
+
+#define SP_POP_TO_ROOT_VC_ANIMATED    [SPFastPush popToRootVCWithAnimated:YES]
 
 
 /**
@@ -153,7 +164,14 @@
 /**
  返回上一个VC
  */
-+ (void)popToLastVC;
++ (void)popToLastVCWithAnimated:(BOOL)animated;
+
+/**
+ 返回到导航器根视图控制器
+
+ @param animated 是否动画
+ */
++ (void)popToRootVCWithAnimated:(BOOL)animated;
 
 /**
  导航栈内返回指定位置的方法

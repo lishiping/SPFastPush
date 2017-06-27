@@ -30,18 +30,9 @@
 {
     NSLog(@"点击");
     
-    //    SPFastPush_OpenVC(@"ThirdVC", @{@"titleName":@"第三个VC"});
-    
-    
-    //    SPFastPush_PoPToLastVC;
-    
-    
-    //        SPFastPush_PopToVCAtIndex(0);
-    //        SPFastPush_PoPToVCAtIndexWithAnimation(0);
-    
-//    SPFastPush_PopToVCByClassName(@"MainVC");
     SP_POP_TO_VC_BY_CLASSNAME(@"MainVC");
 
+//    SP_POP_TO_LAST_VC_NO_ANIMATED;
 }
 
 - (void)didReceiveMemoryWarning {

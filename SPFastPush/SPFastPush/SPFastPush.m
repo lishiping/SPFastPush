@@ -138,15 +138,23 @@
     }
 }
 
-+ (void)popToLastVC
++ (void)popToLastVCWithAnimated:(BOOL)animated
 {
     UINavigationController *navc = [[self class] getCurrentNavC];
     if (navc && navc.viewControllers.count>1)
     {
-        SP_RUN_MAIN_THREAD([navc popViewControllerAnimated:YES]);
+        SP_RUN_MAIN_THREAD([navc popViewControllerAnimated:animated]);
     }
 }
 
++ (void)popToRootVCWithAnimated:(BOOL)animated
+{
+    UINavigationController *navc = [[self class] getCurrentNavC];
+    if (navc && navc.viewControllers.count>1)
+    {
+        SP_RUN_MAIN_THREAD([navc popToRootViewControllerAnimated:animated]);
+    }
+}
 + (void)popToVCAtIndex:(NSInteger)index animated:(BOOL)animated
 {
     SP_ASSERT(index>=0);
