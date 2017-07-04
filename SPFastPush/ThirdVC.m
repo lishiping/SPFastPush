@@ -30,8 +30,9 @@
 {
     NSLog(@"点击");
     
-    SP_POP_TO_VC_BY_CLASSNAME(@"MainVC");
+//    SP_POP_TO_VC_BY_CLASSNAME(@"MainVC");
 
+    SP_POP_TO_VC_AT_INDEX(0);
 //    SP_POP_TO_LAST_VC_NO_ANIMATED;
 }
 

@@ -64,6 +64,8 @@
     
     SP_ASSERT(ret);
     
+    SP_LOG(@"push class is-----%s",object_getClassName(ret));
+
     if (ret) {
         [[self class] pushVC:ret];
     }
@@ -165,6 +167,7 @@
     {
         //从导航栈顶跳到栈顶不成立，所以返回
         if (navc.viewControllers.count-1==index) {
+            SP_LOG(@"NavigationController.viewcontrollers.cout==1,can not pop!!!");
             return;
         }
         
@@ -173,12 +176,14 @@
         SP_ASSERT_CLASS(obj, UIViewController);
         
         if (obj) {
+            
+            SP_LOG(@"pop to class is-----%s",object_getClassName(obj));
+
             SP_RUN_MAIN_THREAD([navc popToViewController:obj animated:animated]);
         }
         else
         {
-            SP_LOG(@"no find NavigationController,can not push!!!");
-            return;
+            SP_LOG(@"not find vc object,can not pop!!!");
         }
     }
     else
@@ -218,6 +223,8 @@
             
             if (SP_IS_KIND_OF(vcobj, cls)) {
                 
+                SP_LOG(@"pop to class is-----%@",className);
+
                 SP_RUN_MAIN_THREAD([navc popToViewController:vcobj animated:animated]);
                 return;
             }
@@ -235,6 +242,8 @@
     UIViewController *topVC = [[self class] topVC];
     
     SP_ASSERT(ret);
+    
+    SP_LOG(@"present class is-----%s",object_getClassName(ret));
     
     if (ret && topVC) {
         SP_RUN_MAIN_THREAD([topVC presentViewController:ret animated:animated completion:nil]);
