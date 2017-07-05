@@ -57,7 +57,7 @@
 
 #pragma mark - push & pop
 
-+(UIViewController *)pushVCWithClassName:(NSString *)vcClassName params:(NSDictionary *)params
++(UIViewController *)pushVCWithClassName:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated
 {
     //创建当前类并加入属性
     UIViewController *ret = [[self  class] createVC:vcClassName withParams:params];
@@ -67,7 +67,7 @@
     SP_LOG(@"push class is-----%s",object_getClassName(ret));
 
     if (ret) {
-        [[self class] pushVC:ret];
+        [[self class] pushVC:ret animated:animated];
     }
     
     return (ret);
@@ -116,7 +116,7 @@
     return object;
 }
 
-+ (void)pushVC:(UIViewController *)vc;
++ (void)pushVC:(UIViewController *)vc animated:(BOOL)animated
 {
     SP_ASSERT_CLASS(vc, UIViewController);
     
@@ -130,7 +130,7 @@
                 vc.hidesBottomBarWhenPushed = YES;
             }
             
-            SP_RUN_MAIN_THREAD([navc pushViewController:vc animated:YES]);
+            SP_RUN_MAIN_THREAD([navc pushViewController:vc animated:animated]);
             
         }else
         {

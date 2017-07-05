@@ -21,23 +21,23 @@
 /*********************push pop************************/
 
 /**
- Using the macro definition quickly push a VC, traverse the navigation stack find current controller, use the push method of navigation controller, dictionaries can pass parameters, implementation principle is KVC dynamic assignment, and return to push the VC object
+ Using the macro definition quickly push a VC, traverse the navigation stack find current controller, use the push method of navigation controller, dictionaries can pass parameters, implementation principle is KVC dynamic assignment, and return to push the VC object (default animation)
  
- 使用宏定义快速push一个VC，原理是遍历当前控制器的导航栈，使用导航控制器push方法，dict字典里面可以传参数，实现原理是KVC动态赋值，并返回push产生的VC对象
+ 使用宏定义快速push一个VC，原理是遍历当前控制器的导航栈，使用导航控制器push方法，dict字典里面可以传参数，实现原理是KVC动态赋值，并返回push产生的VC对象（默认有动画）
  
  例如：//SP_PUSH_VC(@"OtherVC", @{@"titleStr":@"other"});
 
  @param className VC类名
  @param dict      VC所需的参数
- 
  @return 返回VC对象
  */
-#define SP_PUSH_VC(className, dict)    [SPFastPush pushVCWithClassName:className params:(dict)]
+#define SP_PUSH_VC(className, dict)    [SPFastPush pushVCWithClassName:className params:(dict)  animated:YES]
 
+#define SP_PUSH_VC_NO_ANIMATED(className, dict)    [SPFastPush pushVCWithClassName:className params:(dict)  animated:NO]
 
 /**
- return last VC
- 返回上一个VC
+ return last VC(default animation)
+ 返回上一个VC（默认有动画）
  */
 #define SP_POP_TO_LAST_VC    [SPFastPush popToLastVCWithAnimated:YES]
 
@@ -45,8 +45,8 @@
 
 
 /**
- pop to root viewcontroller
- 返回到导航栈根视图控制器
+ pop to root viewcontroller(default no animation)
+ 返回到导航栈根视图控制器（默认无动画）
  */
 #define SP_POP_TO_ROOT_VC    [SPFastPush popToRootVCWithAnimated:NO]
 
@@ -56,35 +56,24 @@
 /**
  Navigationcontroler pop to the index of (navigationcontroler.viewcontrolers)
  
- 导航控制器返回到指定VC对象的方法,通过索引位置找到导航栈内的VC对象并pop（无动画）
+ 导航控制器返回到指定VC对象的方法,通过索引位置找到导航栈内的VC对象并pop（默认无动画）
  
  @param index 导航栈VC元素索引
  */
 #define SP_POP_TO_VC_AT_INDEX(index)    [SPFastPush popToVCAtIndex:(index) animated:NO]
 
-/**
- 导航控制器返回到指定VC对象的方法,通过索引位置找到导航栈内的VC对象并pop（有动画）
- @param index 导航栈VC元素索引
- */
 #define SP_POP_TO_VC_AT_INDEX_ANIMATION(index)    [SPFastPush popToVCAtIndex:(index) animated:YES]
 
 
 /**
  Navigationcontroler pop to VC,find VC object by ClassName in navigationcontroler.viewcontrolers.
  
- 导航控制器返回到指定VC对象的方法,通过VC类名找到导航栈内的VC对象并pop，如果一个导航栈里面有多个相同类的VC对象在里面则返回离根部最近的那个VC（导航栈里有相同类的实例对象通常不符合逻辑）
+ 导航控制器返回到指定VC对象的方法,通过VC类名找到导航栈内的VC对象并pop，如果一个导航栈里面有多个相同类的VC对象在里面则返回离根部最近的那个VC（导航栈里有相同类的实例对象通常不符合逻辑）（默认无动画）
  
  @param className 类名
  */
 #define SP_POP_TO_VC_BY_CLASSNAME(className)    [SPFastPush popToVCWithClassName:(className) animated:NO]
 
-/**
- Navigationcontroler pop to VC,find VC object by ClassName in navigationcontroler.viewcontrolers.(with animation)
- 
- 导航控制器返回到指定VC对象的方法,通过VC类名找到导航栈内的VC对象并pop，如果一个导航栈里面有多个相同类的VC对象在里面则返回离根部最近的那个VC（导航栈里有相同类的实例对象通常不符合逻辑）
- 
- @param className 类名
- */
 #define SP_POP_TO_VC_BY_CLASSNAME_ANIMATION(className)    [SPFastPush popToVCWithClassName:(className) animated:YES]
 
 
@@ -94,7 +83,7 @@
 /**
  Using the macro definition quickly present a VC, get current controller by traversing, dictionaries can pass parameters, implementation principle is KVC dynamic assignment, and return the VC object
  
- 使用宏定义快速present一个VC，原理是遍历得到当前控制器，present 一个新的VC，dict字典里面可以传参数，实现原理是KVC动态赋值
+ 使用宏定义快速present一个VC，原理是遍历得到当前控制器，present 一个新的VC，dict字典里面可以传参数，实现原理是KVC动态赋值（默认有动画）
  
  例如：//SP_PUSH_VC(@"OtherVC", @{@"titleStr":@"other"});
  
@@ -110,7 +99,7 @@
 
 /**
  dismissViewController Animated
- 收回弹出的VC
+ 收回弹出的VC（默认有动画）
 
  @return vc object
  */
@@ -156,10 +145,10 @@
  
  @param vcClassName 要创建VC的类名称
  @param params    传给VC的参数
- 
+ @param animated  是否动画
  @return VC对象
  */
-+ (UIViewController *)pushVCWithClassName:(NSString *)vcClassName params:(NSDictionary *)params;
++ (UIViewController *)pushVCWithClassName:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated;
 
 /**
  返回上一个VC

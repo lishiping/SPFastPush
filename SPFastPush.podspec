@@ -2,8 +2,8 @@
 Pod::Spec.new do |s|
 
   s.name         = "SPFastPush"
-  s.version      = "0.0.15"
-  s.summary      = "Use Macro Fast push next VC,use KVC assign parameter,Fast Pop anther VC.使用宏帮助导航控制器快速push下一个VC,利用KVC传入参数,也可快速返回导航栈内指定VC"
+  s.version      = "0.0.16"
+  s.summary      = "Use Macro push VC,KVC assign parameter,Pop a VC,Present a VC,Dismiss VC.使用宏push VC,KVC赋值参数,返回指定VC,弹出VC,收回VC"
 
 
   s.homepage     = "https://github.com/lishiping/SPFastPush.git"

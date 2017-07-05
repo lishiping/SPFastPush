@@ -2,12 +2,15 @@
 
 #pod 'SPFastPush'                 
 
-#Use Macro NavigationController push next VC，use KVC assign parameter，return current VC Object，and Fast Pop anther VC.
+#Use Macro push VC,KVC assign parameter,Pop a VC,Present a VC,Dismiss VC.使用宏push VC,KVC赋值参数,返回指定VC,弹出VC,收回VC
 
-#本公开库非常实用，代替了经常需要写很多代码的需要
-
-#使用宏帮助导航控制器快速push下一个VC,利用KVC传入参数,也可以快速返回导航栈内指定的VC
+#本公开库非常实用，代替了经常使用导航控制器需要写很多代码的需要
 
 #使用宏定义快速push一个VC，原理是遍历当前控制器的导航栈，使用导航控制器push方法，dict字典里面可以传参数，实现原理是KVC动态赋值，并返回push产生的VC对象
 
-#使用宏定义快速present一个VC，原理是遍历当前显示的控制器，使用VC的 Present方法，dict字典里面可以传参数，实现原理是KVC动态赋值
+ 1.使用宏帮助导航控制器快速push下一个VC(pushVC),
+ 2.利用KVC原理赋值参数,
+ 3.快速返回导航栈内指定的VC(popVC),
+ 4.快速弹出一个VC（presentVC）
+ 5.快速收回一个VC（dismissVC）
+ 6.get方法得到根视图控制器，导航控制器，最上层显示的控制器
