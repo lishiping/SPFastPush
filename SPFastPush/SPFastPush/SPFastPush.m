@@ -19,6 +19,8 @@
 
 #define SP_IS_KIND_OF(obj, cls) [(obj) isKindOfClass:[cls class]]
 
+#define SP_IS_MEMBER_OF(obj, cls) [(obj) isMemberOfClass:[cls class]]
+
 // (is main thread)判断是否主线程
 #define SP_IS_MAIN_THREAD                [NSThread isMainThread]
 
@@ -221,7 +223,7 @@
             
             SP_ASSERT_CLASS(vcobj , UIViewController);
             
-            if (SP_IS_KIND_OF(vcobj, cls)) {
+            if (SP_IS_MEMBER_OF(vcobj, cls)) {
                 
                 SP_LOG(@"pop to class is-----%@",className);
 

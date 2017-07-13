@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "SPFastPush"
-  s.version      = "0.0.17"
+  s.version      = "0.0.18"
   s.summary      = "Use Macro push VC,KVC assign parameter,Pop a VC,Present a VC,Dismiss VC.使用宏push VC,KVC赋值参数,返回指定VC,弹出VC,收回VC"
 
 
