@@ -14,6 +14,7 @@
 //github address//https://github.com/lishiping/SPMacro
 //github address//https://github.com/lishiping/SafeData
 //github address//https://github.com/lishiping/SPCategory
+//github address//https://github.com/lishiping/SPBaseClass
 
 #import "SPFastPush.h"
 
@@ -324,7 +325,7 @@
 
 + (UIViewController *)rootVC
 {
-    UIViewController  *vc = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController  *vc = [[UIApplication sharedApplication].delegate window].rootViewController;
     
     if (!vc) {
         
