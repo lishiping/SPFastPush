@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface OtherVC : UIViewController
+@interface AVC : UIViewController
 
 @property(nonatomic,copy)NSString *titleStr;
 

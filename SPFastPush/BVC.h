@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ThirdVC : UIViewController
+@interface BVC : UIViewController
 
 @property(nonatomic,copy)NSString *titleName;
 

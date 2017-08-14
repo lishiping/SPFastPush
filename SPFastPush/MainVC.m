@@ -7,7 +7,7 @@
 //
 
 #import "MainVC.h"
-#import "OtherVC.h"
+//#import "AVC.h"
 #import "SPFastPush.h"
 
 @interface MainVC ()
@@ -27,25 +27,25 @@
     [pushNextButton addTarget:self action:@selector(pushNext) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:pushNextButton];
     
-    UIButton *pushSelfButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    pushSelfButton.frame = CGRectMake(100, 200, 200, 50);
-    [pushSelfButton setTitle:@"pushself" forState:UIControlStateNormal];
-    [pushSelfButton addTarget:self action:@selector(pushSelf) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:pushSelfButton];
+    
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame = CGRectMake(100, 200, 200, 50);
+    [backButton setTitle:@"presentVC" forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(presentVC) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:backButton];
+    
 }
 
 -(void)pushNext
 {
-  SP_PUSH_VC(@"OtherVC", @{@"titleStr":@"other"});
+  SP_PUSH_VC(@"AVC", @{@"titleStr":@"标题AVC"});
 }
 
--(void)pushSelf
+-(void)presentVC
 {
-    SP_PUSH_VC(@"MainVC", nil);
-        
-//    SP_PRESENT_VC(@"OtherVC", nil);
-
+    SP_PRESENT_VC(@"CVC", @{@"titleStr":@"标题CVC"});
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -6,13 +6,13 @@
 //  Copyright © 2017年 lishiping. All rights reserved.
 //
 
-#import "ThirdVC.h"
+#import "BVC.h"
 #import "SPFastPush.h"
-@interface ThirdVC ()
+@interface BVC ()
 
 @end
 
-@implementation ThirdVC
+@implementation BVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -30,9 +30,9 @@
 {
     NSLog(@"点击");
     
-    SP_POP_TO_VC_BY_CLASSNAME(@"MainVC");
+    SP_POP_TO_VC_BY_CLASSNAME(@"AVC");
 
-//    SP_POP_TO_VC_AT_INDEX(0);
+//    SP_POP_TO_VC_AT_INDEX(1);
 //    SP_POP_TO_LAST_VC_NO_ANIMATED;
 }
 

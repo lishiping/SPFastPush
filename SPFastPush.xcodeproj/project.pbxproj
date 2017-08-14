@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E12C31711F41732800D6EDB4 /* CVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E12C31701F41732800D6EDB4 /* CVC.m */; };
 		E15C00881E1CF1AD00E0219B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E15C00871E1CF1AD00E0219B /* main.m */; };
 		E15C008B1E1CF1AE00E0219B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E15C008A1E1CF1AE00E0219B /* AppDelegate.m */; };
 		E15C008E1E1CF1AE00E0219B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E15C008D1E1CF1AE00E0219B /* ViewController.m */; };
@@ -14,12 +15,14 @@
 		E15C00931E1CF1AE00E0219B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E15C00921E1CF1AE00E0219B /* Assets.xcassets */; };
 		E15C00961E1CF1AE00E0219B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E15C00941E1CF1AE00E0219B /* LaunchScreen.storyboard */; };
 		E15C00A31E1CF1D400E0219B /* MainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E15C009E1E1CF1D400E0219B /* MainVC.m */; };
-		E15C00A41E1CF1D400E0219B /* OtherVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E15C00A01E1CF1D400E0219B /* OtherVC.m */; };
-		E15C00A51E1CF1D400E0219B /* ThirdVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E15C00A21E1CF1D400E0219B /* ThirdVC.m */; };
+		E15C00A41E1CF1D400E0219B /* AVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E15C00A01E1CF1D400E0219B /* AVC.m */; };
+		E15C00A51E1CF1D400E0219B /* BVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E15C00A21E1CF1D400E0219B /* BVC.m */; };
 		E15C00A91E1CF1DE00E0219B /* SPFastPush.m in Sources */ = {isa = PBXBuildFile; fileRef = E15C00A81E1CF1DE00E0219B /* SPFastPush.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E12C316F1F41732800D6EDB4 /* CVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CVC.h; sourceTree = "<group>"; };
+		E12C31701F41732800D6EDB4 /* CVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CVC.m; sourceTree = "<group>"; };
 		E15C00831E1CF1AD00E0219B /* SPFastPush.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SPFastPush.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E15C00871E1CF1AD00E0219B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E15C00891E1CF1AE00E0219B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -32,10 +35,10 @@
 		E15C00971E1CF1AE00E0219B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E15C009D1E1CF1D400E0219B /* MainVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainVC.h; sourceTree = "<group>"; };
 		E15C009E1E1CF1D400E0219B /* MainVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainVC.m; sourceTree = "<group>"; };
-		E15C009F1E1CF1D400E0219B /* OtherVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherVC.h; sourceTree = "<group>"; };
-		E15C00A01E1CF1D400E0219B /* OtherVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherVC.m; sourceTree = "<group>"; };
-		E15C00A11E1CF1D400E0219B /* ThirdVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThirdVC.h; sourceTree = "<group>"; };
-		E15C00A21E1CF1D400E0219B /* ThirdVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThirdVC.m; sourceTree = "<group>"; };
+		E15C009F1E1CF1D400E0219B /* AVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AVC.h; sourceTree = "<group>"; };
+		E15C00A01E1CF1D400E0219B /* AVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AVC.m; sourceTree = "<group>"; };
+		E15C00A11E1CF1D400E0219B /* BVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BVC.h; sourceTree = "<group>"; };
+		E15C00A21E1CF1D400E0219B /* BVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BVC.m; sourceTree = "<group>"; };
 		E15C00A71E1CF1DE00E0219B /* SPFastPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPFastPush.h; sourceTree = "<group>"; };
 		E15C00A81E1CF1DE00E0219B /* SPFastPush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPFastPush.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -74,10 +77,12 @@
 				E15C008A1E1CF1AE00E0219B /* AppDelegate.m */,
 				E15C009D1E1CF1D400E0219B /* MainVC.h */,
 				E15C009E1E1CF1D400E0219B /* MainVC.m */,
-				E15C009F1E1CF1D400E0219B /* OtherVC.h */,
-				E15C00A01E1CF1D400E0219B /* OtherVC.m */,
-				E15C00A11E1CF1D400E0219B /* ThirdVC.h */,
-				E15C00A21E1CF1D400E0219B /* ThirdVC.m */,
+				E15C009F1E1CF1D400E0219B /* AVC.h */,
+				E15C00A01E1CF1D400E0219B /* AVC.m */,
+				E15C00A11E1CF1D400E0219B /* BVC.h */,
+				E15C00A21E1CF1D400E0219B /* BVC.m */,
+				E12C316F1F41732800D6EDB4 /* CVC.h */,
+				E12C31701F41732800D6EDB4 /* CVC.m */,
 				E15C00A61E1CF1DE00E0219B /* SPFastPush */,
 				E15C008C1E1CF1AE00E0219B /* ViewController.h */,
 				E15C008D1E1CF1AE00E0219B /* ViewController.m */,
@@ -179,10 +184,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E15C00A51E1CF1D400E0219B /* ThirdVC.m in Sources */,
-				E15C00A41E1CF1D400E0219B /* OtherVC.m in Sources */,
+				E15C00A51E1CF1D400E0219B /* BVC.m in Sources */,
+				E15C00A41E1CF1D400E0219B /* AVC.m in Sources */,
 				E15C00A91E1CF1DE00E0219B /* SPFastPush.m in Sources */,
 				E15C008E1E1CF1AE00E0219B /* ViewController.m in Sources */,
+				E12C31711F41732800D6EDB4 /* CVC.m in Sources */,
 				E15C00A31E1CF1D400E0219B /* MainVC.m in Sources */,
 				E15C008B1E1CF1AE00E0219B /* AppDelegate.m in Sources */,
 				E15C00881E1CF1AD00E0219B /* main.m in Sources */,
