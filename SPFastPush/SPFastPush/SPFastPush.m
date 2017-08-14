@@ -68,7 +68,7 @@
     SP_ASSERT(ret);
     
     SP_LOG(@"push class is-----%s",object_getClassName(ret));
-
+    
     if (ret) {
         [[self class] pushVC:ret animated:animated];
     }
@@ -181,7 +181,7 @@
         if (obj) {
             
             SP_LOG(@"pop to class is-----%s",object_getClassName(obj));
-
+            
             SP_RUN_MAIN_THREAD([navc popToViewController:obj animated:animated]);
         }
         else
@@ -227,7 +227,7 @@
             if (SP_IS_MEMBER_OF(vcobj, cls)) {
                 
                 SP_LOG(@"pop to class is-----%@",className);
-
+                
                 SP_RUN_MAIN_THREAD([navc popToViewController:vcobj animated:animated]);
                 return;
             }
@@ -322,7 +322,6 @@
     return (SP_IS_KIND_OF(ret, UIViewController) ? ret : nil);
 }
 
-
 + (UIViewController *)rootVC
 {
     UIViewController  *vc = [[UIApplication sharedApplication].delegate window].rootViewController;
@@ -342,6 +341,27 @@
     SP_ASSERT(vc);
     
     return (vc);
+}
+
++ (UITabBarController *)getCurrentTabVC
+{
+    UITabBarController *tab = (UITabBarController *)[[self class] rootVC];
+    
+    SP_ASSERT_CLASS(tab, UITabBarController);
+    
+    return (SP_IS_KIND_OF(tab, UITabBarController) ? tab : nil);
+}
+
++ (BOOL)currentTabVCSetToSelectIndex:(NSUInteger)selectIndex
+{
+    UITabBarController *tab = [[self class] getCurrentTabVC];
+    
+    if (tab && tab.viewControllers.count>selectIndex)
+    {
+        tab.selectedIndex = selectIndex;
+        return YES;
+    }
+    return NO;
 }
 
 

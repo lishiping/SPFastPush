@@ -137,6 +137,21 @@
  */
 #define SP_GET_ROOT_VC   [SPFastPush rootVC]
 
+/**
+ 获取根部的tabBarController
+ 
+ @return tabBarController
+ */
+#define SP_GET_CURRENT_TABVC   [SPFastPush getCurrentTabVC]
+
+/**
+ 设置根部tabBarController的selectIndex
+ 
+ @param selectIndex 位置
+ @return 设置是否成功
+ */
+#define SP_CURRENT_TABVC_SET_SELECTINDEX(selectIndex)  [SPFastPush currentTabVCSetToSelectIndex:(selectIndex)]
+
 
 
 @interface SPFastPush : NSObject
@@ -229,6 +244,22 @@ Get the current navigation controller by  traversing
  */
 + (UIViewController *)rootVC;
 
+
+/**
+ 获取根部的tabBarController
+
+ @return tabBarController
+ */
++ (UITabBarController *)getCurrentTabVC;
+
+
+/**
+ 设置根部tabBarController的selectIndex
+
+ @param selectIndex 位置
+ @return 设置是否成功
+ */
++ (BOOL)currentTabVCSetToSelectIndex:(NSUInteger)selectIndex;
 
 @end
 
