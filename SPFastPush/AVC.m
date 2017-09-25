@@ -8,7 +8,7 @@
 
 #import "AVC.h"
 #import "SPFastPush.h"
-//#import "BVC.h"
+#import "BVC.h"
 
 @interface AVC ()
 
@@ -45,7 +45,9 @@
 
 -(void)push
 {
-    SP_PUSH_VC(@"BVC", @{@"titleName":@"标题是BVC"});
+    BVC *bvc = [[BVC alloc] init];
+    bvc.titleName =@"标题是BVC";
+    SP_PUSH_VC(bvc);
 }
 
 -(void)popLast

@@ -32,9 +32,25 @@
  @param dict      VC所需的参数
  @return 返回VC对象
  */
-#define SP_PUSH_VC(className, dict)               [SPFastPush pushVCWithClassName:className params:(dict) animated:YES]
+#define SP_PUSH_VC_BY_CLASSNAME(className, dict)               [SPFastPush pushVCWithClassName:className params:(dict) animated:YES]
 
-#define SP_PUSH_VC_NO_ANIMATED(className, dict)   [SPFastPush pushVCWithClassName:className params:(dict) animated:NO]
+#define SP_PUSH_VC_BY_CLASSNAME_NO_ANIMATED(className, dict)   [SPFastPush pushVCWithClassName:className params:(dict) animated:NO]
+
+
+/**
+ Using the macro definition quickly push a VC, traverse the navigation stack find current controller, use the push method of navigation controller (default animation)
+ 
+ 使用宏定义快速push一个VC，原理是遍历当前控制器的导航栈，使用导航控制器push方法（默认有动画）
+ 
+ 例如：//OtherVC *vc = [[Other alloc] init];  SP_PUSH_VC(vc);
+ 
+ @param vc VC对象
+ */
+
+#define SP_PUSH_VC(vc)               [SPFastPush pushVC:vc animated:YES]
+
+#define SP_PUSH_VC_NO_ANIMATED(vc, dict)   [SPFastPush pushVC:vc animated:NO]
+
 
 /**
  return last VC(default animation)
@@ -165,6 +181,14 @@
  @return VC对象
  */
 + (UIViewController *)pushVCWithClassName:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated;
+
+/**
+ 导航控制器push一个vc对象
+ 
+ @param vc 实例化的vc对象
+ @param animated  是否动画
+ */
++ (void)pushVC:(UIViewController *)vc animated:(BOOL)animated;
 
 /**
  返回上一个VC

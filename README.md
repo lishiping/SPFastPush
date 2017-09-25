@@ -2,7 +2,7 @@
 
 #pod 'SPFastPush'                 
 
-#Use Macro push VC,KVC assign parameter,Pop a VC,Present a VC,Dismiss VC.使用宏push VC,KVC赋值参数,返回指定VC,弹出VC,收回VC
+#Use Macro push VC,KVC assign parameter,Pop a VC,Present a VC,Dismiss VC.使用宏pushVC,KVC赋值参数,弹出VC,收回VC,一个vc跳转路由"
 
 #本公开库非常实用，代替了经常使用导航控制器需要写很多代码的需要
 

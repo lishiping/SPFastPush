@@ -38,7 +38,7 @@
 
 -(void)pushNext
 {
-  SP_PUSH_VC(@"AVC", @{@"titleStr":@"标题AVC"});
+  SP_PUSH_VC_BY_CLASSNAME(@"AVC", @{@"titleStr":@"标题AVC"});
 }
 
 -(void)presentVC
