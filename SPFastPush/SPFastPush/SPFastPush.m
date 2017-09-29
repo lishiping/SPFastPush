@@ -63,20 +63,18 @@
 +(UIViewController *)pushVCWithClassName:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated
 {
     //创建当前类并加入属性
-    UIViewController *ret = [[self  class] createVC:vcClassName withParams:params];
+    UIViewController *ret = [[self class] createVC:vcClassName withParams:params];
     
     SP_ASSERT(ret);
     
     SP_LOG(@"push class is-----%s",object_getClassName(ret));
     
-    if (ret) {
-        [[self class] pushVC:ret animated:animated];
-    }
+    [[self class] pushVC:ret animated:animated];
     
     return (ret);
 }
 
-+ (UIViewController *)createVC:(NSString *)className withParams:(NSDictionary *)params;
++ (UIViewController *)createVC:(NSString *)className withParams:(NSDictionary *)params
 {
     SP_ASSERT_CLASS(className, NSString);
     
@@ -138,7 +136,6 @@
         }else
         {
             SP_LOG(@"no find NavigationController,can not push!!!");
-            return;
         }
     }
 }
@@ -237,22 +234,32 @@
 
 #pragma mark - present & dismiss
 
-+(UIViewController *)presentViewController:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated
++(UIViewController *)presentVC:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated
 {
     //创建当前类并加入属性
-    UIViewController *ret = [[self  class] createVC:vcClassName withParams:params];
-    
-    UIViewController *topVC = [[self class] topVC];
+    UIViewController *ret = [[self class] createVC:vcClassName withParams:params];
     
     SP_ASSERT(ret);
     
     SP_LOG(@"present class is-----%s",object_getClassName(ret));
     
-    if (ret && topVC) {
-        SP_RUN_MAIN_THREAD([topVC presentViewController:ret animated:animated completion:nil]);
-    }
+    [[self class] presentVC:ret animated:animated];
     
     return  ret;
+}
+
++(void)presentVC:(UIViewController *)vc animated:(BOOL)animated
+{
+    SP_ASSERT_CLASS(vc, UIViewController);
+    
+    if ([vc isKindOfClass:[UIViewController class]]) {
+        
+        UIViewController *topVC = [[self class] topVC];
+        
+        if (topVC) {
+            SP_RUN_MAIN_THREAD([topVC presentViewController:vc animated:animated completion:nil]);
+        }
+    }
 }
 
 + (void)dismissVCAnimated:(BOOL)animated

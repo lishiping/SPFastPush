@@ -7,8 +7,8 @@
 //
 
 #import "MainVC.h"
-//#import "AVC.h"
 #import "SPFastPush.h"
+#import "CVC.h"
 
 @interface MainVC ()
 
@@ -38,12 +38,18 @@
 
 -(void)pushNext
 {
-  SP_PUSH_VC_BY_CLASSNAME(@"AVC", @{@"titleStr":@"标题AVC"});
+    SP_PUSH_VC_BY_CLASSNAME(@"AVC", @{@"titleStr":@"标题AVC"})
 }
 
 -(void)presentVC
 {
-    SP_PRESENT_VC(@"CVC", @{@"titleStr":@"标题CVC"});
+    //    SP_PRESENT_VC_BY_CLASSNAME(@"CVC", @{@"titleStr":@"标题CVC"});
+    
+    //    CVC *cvc = [[CVC alloc] init];
+    //    cvc.titleStr = @"标题CVC";
+    
+    UIViewController *cvc = SP_CREATE_VC_BY_CLASSNAME(@"CVC", @{@"titleStr":@"标题CVC"})
+    SP_PRESENT_VC(cvc)
 }
 
 - (void)didReceiveMemoryWarning {

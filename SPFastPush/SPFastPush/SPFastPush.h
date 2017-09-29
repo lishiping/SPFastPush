@@ -32,9 +32,9 @@
  @param dict      VC所需的参数
  @return 返回VC对象
  */
-#define SP_PUSH_VC_BY_CLASSNAME(className, dict)               [SPFastPush pushVCWithClassName:className params:(dict) animated:YES]
+#define SP_PUSH_VC_BY_CLASSNAME(className, dict)               [SPFastPush pushVCWithClassName:className params:(dict) animated:YES];
 
-#define SP_PUSH_VC_BY_CLASSNAME_NO_ANIMATED(className, dict)   [SPFastPush pushVCWithClassName:className params:(dict) animated:NO]
+#define SP_PUSH_VC_BY_CLASSNAME_NO_ANIMATED(className, dict)   [SPFastPush pushVCWithClassName:className params:(dict) animated:NO];
 
 
 /**
@@ -47,27 +47,27 @@
  @param vc VC对象
  */
 
-#define SP_PUSH_VC(vc)               [SPFastPush pushVC:vc animated:YES]
+#define SP_PUSH_VC(vc)               [SPFastPush pushVC:vc animated:YES];
 
-#define SP_PUSH_VC_NO_ANIMATED(vc, dict)   [SPFastPush pushVC:vc animated:NO]
+#define SP_PUSH_VC_NO_ANIMATED(vc, dict)   [SPFastPush pushVC:vc animated:NO];
 
 
 /**
  return last VC(default animation)
  返回上一个VC（默认有动画）
  */
-#define SP_POP_TO_LAST_VC               [SPFastPush popToLastVCWithAnimated:YES]
+#define SP_POP_TO_LAST_VC               [SPFastPush popToLastVCWithAnimated:YES];
 
-#define SP_POP_TO_LAST_VC_NO_ANIMATED   [SPFastPush popToLastVCWithAnimated:NO]
+#define SP_POP_TO_LAST_VC_NO_ANIMATED   [SPFastPush popToLastVCWithAnimated:NO];
 
 
 /**
  pop to root viewcontroller(default no animation)
  返回到导航栈根视图控制器（默认无动画）
  */
-#define SP_POP_TO_ROOT_VC            [SPFastPush popToRootVCWithAnimated:NO]
+#define SP_POP_TO_ROOT_VC            [SPFastPush popToRootVCWithAnimated:NO];
 
-#define SP_POP_TO_ROOT_VC_ANIMATED   [SPFastPush popToRootVCWithAnimated:YES]
+#define SP_POP_TO_ROOT_VC_ANIMATED   [SPFastPush popToRootVCWithAnimated:YES];
 
 
 /**
@@ -77,9 +77,9 @@
  
  @param index 导航栈VC元素索引
  */
-#define SP_POP_TO_VC_AT_INDEX(index)             [SPFastPush popToVCAtIndex:(index) animated:NO]
+#define SP_POP_TO_VC_AT_INDEX(index)             [SPFastPush popToVCAtIndex:(index) animated:NO];
 
-#define SP_POP_TO_VC_AT_INDEX_ANIMATION(index)   [SPFastPush popToVCAtIndex:(index) animated:YES]
+#define SP_POP_TO_VC_AT_INDEX_ANIMATION(index)   [SPFastPush popToVCAtIndex:(index) animated:YES];
 
 
 /**
@@ -89,9 +89,9 @@
  
  @param className 类名
  */
-#define SP_POP_TO_VC_BY_CLASSNAME(className)             [SPFastPush popToVCWithClassName:(className) animated:NO]
+#define SP_POP_TO_VC_BY_CLASSNAME(className)             [SPFastPush popToVCWithClassName:(className) animated:NO];
 
-#define SP_POP_TO_VC_BY_CLASSNAME_ANIMATION(className)   [SPFastPush popToVCWithClassName:(className) animated:YES]
+#define SP_POP_TO_VC_BY_CLASSNAME_ANIMATION(className)   [SPFastPush popToVCWithClassName:(className) animated:YES];
 
 
 
@@ -109,10 +109,14 @@
  
  @return 返回VC对象
  */
-#define SP_PRESENT_VC(className, dict)               [SPFastPush presentViewController:className params:(dict) animated:YES]
+#define SP_PRESENT_VC_BY_CLASSNAME(className, dict)               [SPFastPush presentVC:className params:(dict) animated:YES];
 
-#define SP_PRESENT_VC_NO_ANIMATED(className, dict)   [SPFastPush presentViewController:className params:(dict) animated:NO]
+#define SP_PRESENT_VC_BY_CLASSNAME_NO_ANIMATED(className, dict)   [SPFastPush presentVC:className params:(dict) animated:NO];
 
+
+#define SP_PRESENT_VC(vc)               [SPFastPush presentVC:vc animated:YES];
+
+#define SP_PRESENT_VC_NO_ANIMATED(vc)   [SPFastPush presentVC:vc animated:NO];
 
 /**
  dismissViewController Animated
@@ -120,9 +124,21 @@
 
  @return vc object
  */
-#define SP_DISMISS_VC               [SPFastPush dismissVCAnimated:YES]
+#define SP_DISMISS_VC               [SPFastPush dismissVCAnimated:YES];
 
-#define SP_DISMISS_VC_NO_ANIMATED   [SPFastPush dismissVCAnimated:NO]
+#define SP_DISMISS_VC_NO_ANIMATED   [SPFastPush dismissVCAnimated:NO];
+
+
+/*********************Create VC Object************************/
+
+/**
+ 创建一个VC，并使用KVC赋值
+ 
+ @param className vc类名
+ @param params 赋值参数
+ @return 返回VC对象
+ */
+#define SP_CREATE_VC_BY_CLASSNAME(className, dict)               [SPFastPush createVC:className withParams:(dict)];
 
 
 /*********************get Navc topVC rootVC************************/
@@ -133,7 +149,7 @@
  
  @return 导航控制器对象
  */
-#define SP_GET_CURRENT_NAVC   [SPFastPush getCurrentNavC]
+#define SP_GET_CURRENT_NAVC   [SPFastPush getCurrentNavC];
 
 
 /**
@@ -142,7 +158,7 @@
  
  @return vc object
  */
-#define SP_GET_TOP_VC   [SPFastPush topVC]
+#define SP_GET_TOP_VC   [SPFastPush topVC];
 
 
 /**
@@ -151,14 +167,14 @@
  
  @return rootViewController
  */
-#define SP_GET_ROOT_VC   [SPFastPush rootVC]
+#define SP_GET_ROOT_VC   [SPFastPush rootVC];
 
 /**
  获取根部的tabBarController
  
  @return tabBarController
  */
-#define SP_GET_CURRENT_TABVC   [SPFastPush getCurrentTabVC]
+#define SP_GET_CURRENT_TABVC   [SPFastPush getCurrentTabVC];
 
 /**
  设置根部tabBarController的selectIndex
@@ -166,7 +182,7 @@
  @param selectIndex 位置
  @return 设置是否成功
  */
-#define SP_CURRENT_TABVC_SET_SELECTINDEX(selectIndex)  [SPFastPush currentTabVCSetToSelectIndex:(selectIndex)]
+#define SP_CURRENT_TABVC_SET_SELECTINDEX(selectIndex)  [SPFastPush currentTabVCSetToSelectIndex:(selectIndex)];
 
 
 
@@ -218,7 +234,6 @@
  */
 +(void)popToVCWithClassName:(NSString*)className animated:(BOOL)animated;
 
-
 /**
  创建一个VC，并使用KVC赋值，然后弹出
 
@@ -227,12 +242,31 @@
  @param animated 是否动画
  @return 返回弹出的VC对象
  */
-+(UIViewController *)presentViewController:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated;
++(UIViewController *)presentVC:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated;
+
+/**
+ 弹出一个VC对象
+ 
+ @param vc ViewController对象
+ @param animated 是否动画
+ */
++(void)presentVC:(UIViewController *)vc animated:(BOOL)animated;
+
 
 /**
  收回弹出的VC
  */
 + (void)dismissVCAnimated:(BOOL)animated;
+
+
+/**
+ 创建一个VC，并使用KVC赋值
+ 
+ @param className vc类名
+ @param params 赋值参数
+ @return 返回VC对象
+ */
++ (UIViewController *)createVC:(NSString *)className withParams:(NSDictionary *)params;
 
 /**
 Get the current navigation controller by  traversing
