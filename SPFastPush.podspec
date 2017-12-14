@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "SPFastPush"
-  s.version      = "0.5.0"
+  s.version      = "0.5.1"
   s.summary      = "Use Macro push VC,KVC assign parameter,Pop a VC,Present a VC,Dismiss VC.使用宏pushVC,KVC赋值参数,弹出VC,收回VC,一个vc跳转路由"
 
 
@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
 
   s.author             = { "lishiping" => "83118274@qq.com" }
 
-  s.ios.deployment_target = "6.0"
+  s.ios.deployment_target = "7.0"
 
   s.source       = { :git => "https://github.com/lishiping/SPFastPush.git", :tag => s.version }
 
