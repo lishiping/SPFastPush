@@ -141,7 +141,7 @@
 #define SP_CREATE_VC_BY_CLASSNAME(className, dict)               [SPFastPush createVC:className withParams:(dict)];
 
 
-/*********************get Navc topVC rootVC************************/
+/***************get Navc topVC TabVC rootVC window*******************/
 
 /**
  Get the current navigation controller by  traversing
@@ -154,20 +154,11 @@
 
 /**
  Get the current display controller object
- 获得当前显示的控制器对象
+ 获得当前最上层显示的控制器对象
  
  @return vc object
  */
 #define SP_GET_TOP_VC   [SPFastPush topVC];
-
-
-/**
- Get rootViewController
- 获取APP根视图控制器
- 
- @return rootViewController
- */
-#define SP_GET_ROOT_VC   [SPFastPush rootVC];
 
 /**
  获取根部的tabBarController
@@ -183,6 +174,23 @@
  @return 设置是否成功
  */
 #define SP_CURRENT_TABVC_SET_SELECTINDEX(selectIndex)  [SPFastPush currentTabVCSetToSelectIndex:(selectIndex)];
+
+/**
+ Get rootViewController
+ 获取APP根视图控制器
+ 
+ @return rootViewController
+ */
+#define SP_GET_ROOT_VC   [SPFastPush rootVC];
+
+/**
+ Get window
+ 获取APP主窗口
+ 
+ @return 主窗口
+ */
+#define SP_GET_MAIN_WINDOW   [SPFastPush mainWindow];
+
 
 
 
@@ -293,6 +301,20 @@ Get the current navigation controller by  traversing
  */
 + (UIViewController *)topVC;
 
+/**
+ 获取根部的tabBarController
+ 
+ @return tabBarController
+ */
++ (UITabBarController *)getCurrentTabVC;
+
+/**
+ 设置根部tabBarController的selectIndex
+ 
+ @param selectIndex 位置
+ @return 设置是否成功
+ */
++ (BOOL)currentTabVCSetToSelectIndex:(NSUInteger)selectIndex;
 
 /**
  Get rootViewController
@@ -302,22 +324,13 @@ Get the current navigation controller by  traversing
  */
 + (UIViewController *)rootVC;
 
-
 /**
- 获取根部的tabBarController
+ Get window
+ 获取APP主窗口
 
- @return tabBarController
+ @return 主窗口
  */
-+ (UITabBarController *)getCurrentTabVC;
-
-
-/**
- 设置根部tabBarController的selectIndex
-
- @param selectIndex 位置
- @return 设置是否成功
- */
-+ (BOOL)currentTabVCSetToSelectIndex:(NSUInteger)selectIndex;
++ (UIWindow*)mainWindow;
 
 @end
 

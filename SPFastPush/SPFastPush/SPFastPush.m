@@ -331,23 +331,28 @@
 
 + (UIViewController *)rootVC
 {
-    UIViewController  *vc = [[UIApplication sharedApplication].delegate window].rootViewController;
-    
-    if (!vc) {
-        
-        NSArray *arr = [[UIApplication sharedApplication] windows];
-        
-        if (arr && arr.count) {
-            UIWindow *window = [arr objectAtIndex:0];
-            if (window.rootViewController) {
-                vc = window.rootViewController;
-            }
-        }
-    }
+    UIViewController  *vc = [[self class] mainWindow].rootViewController;
     
     SP_ASSERT(vc);
     
     return (vc);
+}
+
++ (UIWindow*)mainWindow
+{
+    UIWindow *window = nil;
+    
+    UIApplication *app  = [UIApplication sharedApplication];
+    
+    if ([app.delegate respondsToSelector:@selector(window)]) {
+        window = [app.delegate window];
+    }
+    else if ([app windows].count>0)
+    {
+        window = [[app windows] objectAtIndex:0];
+    }
+    
+    return window;
 }
 
 + (UITabBarController *)getCurrentTabVC
