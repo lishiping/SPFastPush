@@ -26,15 +26,32 @@
     [backButton setTitle:@"dismissVC" forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(dismissVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
+    
+    
+    UIButton *openButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    openButton.frame = CGRectMake(100, 300, 200, 50);
+    [openButton setTitle:@"appOpenURL" forState:UIControlStateNormal];
+    [openButton addTarget:self action:@selector(appOPenURL) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:openButton];
 
 }
 
 
 -(void)dismissVC
 {
-    SP_DISMISS_VC;
+    SP_DISMISS_VC
 }
 
+-(void)appOPenURL
+{
+    
+//    SP_APP_OPEN_URL_STRING(@"sinaweibo://gotohome?grouptype=1")
+    //    [SPFastPush appOpenURL:[NSURL URLWithString:@"sinaweibo://gotohome?grouptype=1"] option:@{} completionHandler:nil];
+    
+    
+        SP_APP_OPEN_SYSTEM_SETTING_LOCATION
+
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

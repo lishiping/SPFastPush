@@ -192,6 +192,41 @@
 #define SP_GET_MAIN_WINDOW   [SPFastPush mainWindow];
 
 
+/***************open URL*******************/
+
+
+/**
+ APP打开系统或者其他APP的方法，传入其他app的scheme等方式
+
+ @param urlString 打开的urlString
+ */
+#define SP_APP_OPEN_URL_STRING(urlString) [SPFastPush appOpenURLString:urlString option:@{} completionHandler:nil];
+
+/**
+ 打开系统通知
+ */
+#define SP_APP_OPEN_SYSTEM_SETTING_NOTIFICATION [SPFastPush appOpenSystemSettingNotification];
+
+/**
+ 打开系统定位
+ */
+#define SP_APP_OPEN_SYSTEM_SETTING_LOCATION [SPFastPush appOpenSystemSettingLocation];
+
+/**
+ 打开系统设置
+ */
+#define SP_APP_OPEN_SYSTEM_SETTING [SPFastPush appOpenSystemSetting];
+
+/**
+ Call the system call
+ 调用系统拨打电话
+ 
+ @param phoneNumber 电话号码
+ @param isNeedAlert 是否弹出alert询问
+ 
+ */
+#define SP_APP_OPEN_TELPHONE(phoneNumber,isNeedAlert) [SPFastPush appOpenTelPhone:phoneNumber needAlert:isNeedAlert];
+
 
 
 @interface SPFastPush : NSObject
@@ -331,6 +366,48 @@ Get the current navigation controller by  traversing
  @return 主窗口
  */
 + (UIWindow*)mainWindow;
+
+/*********************open URL************************/
+
+
+/**
+ UIApplication打开url字符串
+
+ @param urlString url字符串
+ @param option 可选参数
+ @param completion 完成回调
+ */
++(void)appOpenURLString:(NSString *)urlString option:(NSDictionary*)option completionHandler:(void (^ __nullable)(BOOL success))completion;
+
+/**
+ UIApplication打开URL
+
+ @param url url地址
+ @param option 可选参数
+ @param completion 完成回调
+ */
++(void)appOpenURL:(NSURL *)url option:(NSDictionary*)option completionHandler:(void (^ __nullable)(BOOL success))completion;
+
+//打开系统通知
++(void)appOpenSystemSettingNotification;
+
+//打开系统定位
++(void)appOpenSystemSettingLocation;
+
+//打开系统wifi
++(void)appOpenSystemSettingWIFI;
+
+//打开系统设置
++(void)appOpenSystemSetting;
+
+/**
+ 调用系统拨打电话
+ 
+ @param phoneNumber 电话号码
+ @param isNeedAlert 是否需要弹出警告框确认
+ */
++(void)appOpenTelPhone:(NSString *)phoneNumber needAlert:(BOOL)isNeedAlert;
+
 
 @end
 

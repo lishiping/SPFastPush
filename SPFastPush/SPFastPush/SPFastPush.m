@@ -376,6 +376,172 @@
     return NO;
 }
 
+#pragma mark - APP打开系统URL
+
++(void)appOpenURLString:(NSString *)urlString option:(NSDictionary*)option completionHandler:(void (^ __nullable)(BOOL success))completion
+{
+    if ([urlString isKindOfClass:[NSString class]]&&urlString.length>0) {
+        [self appOpenURL:[NSURL URLWithString:urlString] option:option completionHandler:completion];
+    }
+}
+
++(void)appOpenURL:(NSURL *)url option:(NSDictionary*)option completionHandler:(void (^ __nullable)(BOOL success))completion
+{
+    if (url)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([[UIDevice currentDevice].systemVersion floatValue]>=10.0f)
+            {
+                [[UIApplication sharedApplication] openURL:url options:option completionHandler:completion];
+            }
+            else
+            {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+        });
+    }
+}
+
+/*
+ 注意：
+ 
+ 1.iOS10及以后prefs前缀不再生效，APP—Prefs前缀可用
+ 2.iOS10之前两个前缀都可用,但是prefs可以到达详细的页面，例如可以直接到达定位的开关
+ 3.iOS11及以后prefs前缀不再生效，APP—Prefs前缀跳转只能到系统的设置页，不能到设置里面的具体页面
+ 
+ 要跳转的设置界面    URL String
+ WIFI    App-Prefs:root=WIFI
+ Bluetooth    App-Prefs:root=Bluetooth
+ 蜂窝移动网络    App-Prefs:root=MOBILE_DATA_SETTINGS_ID
+ 个人热点    App-Prefs:root=INTERNET_TETHERING
+ VPN    App-Prefs:root=VPN
+ 运营商    App-Prefs:root=Carrier
+ 通知    App-Prefs:root=NOTIFICATIONS_ID
+ 定位服务    App-Prefs:root=Privacy&path=LOCATION
+ 通用    App-Prefs:root=General
+ 关于本机    App-Prefs:root=General&path=About
+ 键盘    App-Prefs:root=General&path=Keyboard
+ 辅助功能    App-Prefs:root=General&path=ACCESSIBILITY
+ 语言与地区    App-Prefs:root=General&path=INTERNATIONAL
+ 还原    App-Prefs:root=General&path=Reset
+ 墙纸    App-Prefs:root=Wallpaper
+ Siri    App-Prefs:root=SIRI
+ 隐私    App-Prefs:root=Privacy
+ Safari    App-Prefs:root=SAFARI
+ 音乐    App-Prefs:root=MUSIC
+ 照相与照相机    App-Prefs:root=Photos
+ FaceTime    App-Prefs:root=FACETIME
+ 电池电量    App-Prefs:root=BATTERY_USAGE
+ 存储空间    App-Prefs:root=General&path=STORAGE_ICLOUD_USAGE/DEVICE_STORAGE
+ 显示与亮度    App-Prefs:root=DISPLAY
+ 声音设置    App-Prefs:root=Sounds
+ App Store    App-Prefs:root=STORE
+ iCloud    App-Prefs:root=CASTLE
+ 语言设置    App-Prefs:root=General&path=INTERNATIONAL
+ 
+ 
+ 蜂窝网络：prefs:root=MOBILE_DATA_SETTINGS_ID
+ VPN — prefs:root=General&path=Network/VPN
+ Wi-Fi：prefs:root=WIFI
+ 定位服务：prefs:root=LOCATION_SERVICES
+ 个人热点：prefs:root=INTERNET_TETHERING
+ 关于本机：prefs:root=General&path=About
+ 辅助功能：prefs:root=General&path=ACCESSIBILITY
+ 飞行模式：prefs:root=AIRPLANE_MODE
+ 锁定：prefs:root=General&path=AUTOLOCK
+ 亮度：prefs:root=Brightness
+ 蓝牙：prefs:root=General&path=Bluetooth
+ 时间设置：prefs:root=General&path=DATE_AND_TIME
+ FaceTime：prefs:root=FACETIME
+ 设置：prefs:root=General
+ 键盘设置：prefs:root=General&path=Keyboard
+ iCloud：prefs:root=CASTLEiCloud
+ 备份：prefs:root=CASTLE&path=STORAGE_AND_BACKUP
+ 语言：prefs:root=General&path=INTERNATIONAL
+ 定位：prefs:root=LOCATION_SERVICES
+ 音乐：prefs:root=MUSICMusic
+ Equalizer — prefs:root=MUSIC&path=EQMusic
+ Volume Limit — prefs:root=MUSIC&path=VolumeLimit
+ Network — prefs:root=General&path=Network
+ Nike + iPod — prefs:root=NIKE_PLUS_IPOD
+ Notes — prefs:root=NOTES
+ Notification — prefs:root=NOTIFICATIONS_ID
+ Phone — prefs:root=Phone
+ Photos — prefs:root=Photos
+ Profile —prefs:root=General&path=ManagedConfigurationList
+ Reset — prefs:root=General&path=Reset
+ Safari — prefs:root=Safari
+ Siri — prefs:root=General&path=Assistant
+ Sounds — prefs:root=Sounds
+ Software Update —prefs:root=General&path=SOFTWARE_UPDATE_LINK
+ Store — prefs:root=STORET
+ witter — prefs:root=TWITTER
+ Usage — prefs:root=General&path=USAGE
+ Wallpaper — prefs:root=Wallpaper
+ 
+ */
+
+//打开系统通知
++(void)appOpenSystemSettingNotification
+{
+    //ios10之前可以直接跳到具体页面
+    NSString *urlString = @"prefs:root=NOTIFICATIONS_ID";
+    if ([UIDevice currentDevice].systemVersion.floatValue>=10.0f) {
+        //ios10之后只能跳到设置页面
+        urlString = @"App-Prefs:root=NOTIFICATIONS_ID";
+    }
+    
+    [self appOpenURLString:urlString option:@{} completionHandler:nil];
+}
+
+//打开系统定位
++(void)appOpenSystemSettingLocation
+{
+    //ios10之前可以直接跳到定位的具体页面
+    NSString *urlString = @"prefs:root=LOCATION_SERVICES";
+    if ([UIDevice currentDevice].systemVersion.floatValue>=10.0f) {
+        //ios10之后只能跳到设置页面
+        urlString = @"App-Prefs:root=LOCATION_SERVICES";
+    }
+    
+    [self appOpenURLString:urlString option:@{} completionHandler:nil];
+}
+
+//打开系统wifi
++(void)appOpenSystemSettingWIFI
+{
+    //ios10之前可以直接跳到具体页面
+    NSString *urlString = @"prefs:root=WIFI";
+    if ([UIDevice currentDevice].systemVersion.floatValue>=10.0f) {
+        //ios10之后只能跳到设置页面
+        urlString = @"App-Prefs:root=WIFI";
+    }
+    
+    [self appOpenURLString:urlString option:@{} completionHandler:nil];
+}
+
+//打开系统设置
++(void)appOpenSystemSetting
+{
+    NSString *urlString = @"prefs:root";
+    if ([UIDevice currentDevice].systemVersion.floatValue>=8.0f) {
+        urlString = UIApplicationOpenSettingsURLString;
+    }
+    
+    [self appOpenURLString:urlString option:@{} completionHandler:nil];
+}
+
+
+//调取系统拨打电话
++(void)appOpenTelPhone:(NSString *)phoneNumber needAlert:(BOOL)isNeedAlert
+{
+    if ([phoneNumber isKindOfClass:[NSString class]] && phoneNumber.length > 0)
+    {
+        NSString *tel = [NSString stringWithFormat:(isNeedAlert ? @"telprompt://%@" : @"tel://%@"), phoneNumber];
+        [[self class] appOpenURLString:tel option:nil completionHandler:nil];
+    }
+}
+
 
 @end
 

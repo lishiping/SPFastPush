@@ -14,3 +14,5 @@
  4.快速弹出一个VC（presentVC）
  5.快速收回一个VC（dismissVC）
  6.get方法得到根视图控制器，导航控制器，标签控制器，最上层显示的控制器
+
+#7.增加UIApplication OpenURL的宏定义快捷使用方法，以及打开系统通知，系统定位等
