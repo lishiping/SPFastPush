@@ -26,7 +26,7 @@
 #define SP_IS_MAIN_THREAD                [NSThread isMainThread]
 
 // (run in main thread)使block在主线程中运行
-#define SP_RUN_MAIN_THREAD(block)    if (SP_IS_MAIN_THREAD) {(block);} else {dispatch_async(dispatch_get_main_queue(), ^{(block);});}
+#define SP_RUN_MAIN_THREAD(block)    if (SP_IS_MAIN_THREAD) {block} else {dispatch_async(dispatch_get_main_queue(), ^{block});}
 
 
 #if DEBUG
@@ -131,7 +131,7 @@
                 vc.hidesBottomBarWhenPushed = YES;
             }
             
-            SP_RUN_MAIN_THREAD([navc pushViewController:vc animated:animated]);
+            SP_RUN_MAIN_THREAD([navc pushViewController:vc animated:animated];);
             
         }else
         {
@@ -145,7 +145,7 @@
     UINavigationController *navc = [[self class] getCurrentNavC];
     if (navc && navc.viewControllers.count>1)
     {
-        SP_RUN_MAIN_THREAD([navc popViewControllerAnimated:animated]);
+        SP_RUN_MAIN_THREAD([navc popViewControllerAnimated:animated];);
     }
 }
 
@@ -154,7 +154,7 @@
     UINavigationController *navc = [[self class] getCurrentNavC];
     if (navc && navc.viewControllers.count>1)
     {
-        SP_RUN_MAIN_THREAD([navc popToRootViewControllerAnimated:animated]);
+        SP_RUN_MAIN_THREAD([navc popToRootViewControllerAnimated:animated];);
     }
 }
 + (void)popToVCAtIndex:(NSInteger)index animated:(BOOL)animated
@@ -179,7 +179,7 @@
             
             SP_LOG(@"pop to class is-----%s",object_getClassName(obj));
             
-            SP_RUN_MAIN_THREAD([navc popToViewController:obj animated:animated]);
+            SP_RUN_MAIN_THREAD([navc popToViewController:obj animated:animated];);
         }
         else
         {
@@ -225,7 +225,7 @@
                 
                 SP_LOG(@"pop to class is-----%@",className);
                 
-                SP_RUN_MAIN_THREAD([navc popToViewController:vcobj animated:animated]);
+                SP_RUN_MAIN_THREAD([navc popToViewController:vcobj animated:animated];);
                 return;
             }
         }
@@ -257,7 +257,7 @@
         UIViewController *topVC = [[self class] topVC];
         
         if (topVC) {
-            SP_RUN_MAIN_THREAD([topVC presentViewController:vc animated:animated completion:nil]);
+            SP_RUN_MAIN_THREAD([topVC presentViewController:vc animated:animated completion:nil];);
         }
     }
 }
@@ -267,7 +267,7 @@
     UIViewController *vc = [[self class] getPresentingVC];
     if (vc)
     {
-        SP_RUN_MAIN_THREAD([vc dismissViewControllerAnimated:animated completion:nil]);
+        SP_RUN_MAIN_THREAD([vc dismissViewControllerAnimated:animated completion:nil];);
     }
 }
 
