@@ -387,7 +387,7 @@
 
 +(void)appOpenURL:(NSURL *)url option:(NSDictionary*)option completionHandler:(void (^ __nullable)(BOOL success))completion
 {
-    if (url)
+    if (url && [[UIApplication sharedApplication] canOpenURL:url])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             if ([[UIDevice currentDevice].systemVersion floatValue]>=10.0f)
