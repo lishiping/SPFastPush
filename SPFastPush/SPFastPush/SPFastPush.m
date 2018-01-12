@@ -74,49 +74,6 @@
     return (ret);
 }
 
-+ (UIViewController *)createVC:(NSString *)className withParams:(NSDictionary *)params
-{
-    SP_ASSERT_CLASS(className, NSString);
-    
-    if (!SP_IS_KIND_OF(className, NSString)||className.length==0) {
-        SP_LOG(@"className string error!!!!!-----");
-        return nil;
-    }
-    
-    UIViewController *ret = nil;
-    NSString *name = [className stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
-    Class cls = NSClassFromString(name);
-    
-    if (cls && [cls isSubclassOfClass:[UIViewController class]]) {
-        
-        // create viewController
-        UIViewController *vc = [[cls alloc] init];
-        
-        // kvc set params;
-        ret = [[self class] object:vc kvc_setParams:params];
-        
-    } else {
-        SP_LOG(@"%@ class not Find!!!!!-----", className);
-    }
-    return (ret);
-}
-
-+ (id)object:(id)object kvc_setParams:(NSDictionary *)params;
-{
-    if (SP_IS_KIND_OF(params, NSDictionary) && (params.count>0))
-    {
-        @try {
-            [object setValuesForKeysWithDictionary:params];
-        } @catch (NSException *exception) {
-            SP_LOG(@"KVC Set Value For Key error:%@", exception);
-        } @finally {
-        }
-    }
-    
-    return object;
-}
-
 + (void)pushVC:(UIViewController *)vc animated:(BOOL)animated
 {
     SP_ASSERT_CLASS(vc, UIViewController);
@@ -271,7 +228,50 @@
     }
 }
 
+#pragma mark - create VC object
 
++ (UIViewController *)createVC:(NSString *)className withParams:(NSDictionary *)params
+{
+    SP_ASSERT_CLASS(className, NSString);
+    
+    if (!SP_IS_KIND_OF(className, NSString)||className.length==0) {
+        SP_LOG(@"className string error!!!!!-----");
+        return nil;
+    }
+    
+    UIViewController *ret = nil;
+    NSString *name = [className stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    Class cls = NSClassFromString(name);
+    
+    if (cls && [cls isSubclassOfClass:[UIViewController class]]) {
+        
+        // create viewController
+        UIViewController *vc = [[cls alloc] init];
+        
+        // kvc set params;
+        ret = [[self class] object:vc kvc_setParams:params];
+        
+    } else {
+        SP_LOG(@"%@ class not Find!!!!!-----", className);
+    }
+    return (ret);
+}
+
++ (id)object:(id)object kvc_setParams:(NSDictionary *)params;
+{
+    if (SP_IS_KIND_OF(params, NSDictionary) && (params.count>0))
+    {
+        @try {
+            [object setValuesForKeysWithDictionary:params];
+        } @catch (NSException *exception) {
+            SP_LOG(@"KVC Set Value For Key error:%@", exception);
+        } @finally {
+        }
+    }
+    
+    return object;
+}
 #pragma mark - get VC
 +(UINavigationController *)getCurrentNavC
 {
@@ -502,19 +502,6 @@
     if ([UIDevice currentDevice].systemVersion.floatValue>=10.0f) {
         //ios10之后只能跳到设置页面
         urlString = @"App-Prefs:root=LOCATION_SERVICES";
-    }
-    
-    [self appOpenURLString:urlString option:@{} completionHandler:nil];
-}
-
-//打开系统wifi
-+(void)appOpenSystemSettingWIFI
-{
-    //ios10之前可以直接跳到具体页面
-    NSString *urlString = @"prefs:root=WIFI";
-    if ([UIDevice currentDevice].systemVersion.floatValue>=10.0f) {
-        //ios10之后只能跳到设置页面
-        urlString = @"App-Prefs:root=WIFI";
     }
     
     [self appOpenURLString:urlString option:@{} completionHandler:nil];

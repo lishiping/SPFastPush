@@ -231,6 +231,8 @@
 
 @interface SPFastPush : NSObject
 
+#pragma mark - push & pop
+
 /**
  创建VC并push到VC
  
@@ -277,6 +279,8 @@
  */
 +(void)popToVCWithClassName:(NSString*)className animated:(BOOL)animated;
 
+#pragma mark - present & dismiss
+
 /**
  创建一个VC，并使用KVC赋值，然后弹出
 
@@ -301,6 +305,7 @@
  */
 + (void)dismissVCAnimated:(BOOL)animated;
 
+#pragma mark - create VC object 
 
 /**
  创建一个VC，并使用KVC赋值
@@ -310,6 +315,8 @@
  @return 返回VC对象
  */
 + (UIViewController *)createVC:(NSString *)className withParams:(NSDictionary *)params;
+
+#pragma mark - get VC
 
 /**
 Get the current navigation controller by  traversing
@@ -343,13 +350,6 @@ Get the current navigation controller by  traversing
  */
 + (UITabBarController *)getCurrentTabVC;
 
-/**
- 设置根部tabBarController的selectIndex
- 
- @param selectIndex 位置
- @return 设置是否成功
- */
-+ (BOOL)currentTabVCSetToSelectIndex:(NSUInteger)selectIndex;
 
 /**
  Get rootViewController
@@ -367,8 +367,19 @@ Get the current navigation controller by  traversing
  */
 + (UIWindow*)mainWindow;
 
-/*********************open URL************************/
+#pragma mark - TabBarViewController
 
+/**
+ 设置根部tabBarController的selectIndex
+ 
+ @param selectIndex 位置
+ @return 设置是否成功
+ */
++ (BOOL)currentTabVCSetToSelectIndex:(NSUInteger)selectIndex;
+
+#pragma mark - APP open URL
+
+/*********************open URL************************/
 
 /**
  UIApplication打开url字符串
@@ -393,9 +404,6 @@ Get the current navigation controller by  traversing
 
 //打开系统定位
 +(void)appOpenSystemSettingLocation;
-
-//打开系统wifi
-+(void)appOpenSystemSettingWIFI;
 
 //打开系统设置
 +(void)appOpenSystemSetting;
