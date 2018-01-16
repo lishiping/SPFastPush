@@ -18,6 +18,7 @@
 
 #import <UIKit/UIKit.h>
 
+//李世平，version（0.7.0）
 
 /*********************push pop************************/
 
@@ -102,7 +103,7 @@
  
  使用宏定义快速present一个VC，原理是遍历得到当前控制器，present 一个新的VC，dict字典里面可以传参数，实现原理是KVC动态赋值（默认有动画）
  
- 例如：//SP_PUSH_VC(@"OtherVC", @{@"titleStr":@"other"});
+ 例如：//SP_PRESENT_VC_BY_CLASSNAME(@"OtherVC", @{@"titleStr":@"other"});
  
  @param className VC类名
  @param dict      VC所需的参数
@@ -117,6 +118,13 @@
 #define SP_PRESENT_VC(vc)               [SPFastPush presentVC:vc animated:YES];
 
 #define SP_PRESENT_VC_NO_ANIMATED(vc)   [SPFastPush presentVC:vc animated:NO];
+
+/**
+ 从window.rootViewController弹出一个VC对象
+ */
+#define SP_ROOT_PRESENT_VC(vc)               [SPFastPush rootVCpresentVC:vc animated:YES];
+
+#define SP_ROOT_PRESENT_VC_NO_ANIMATED(vc)   [SPFastPush rootVCpresentVC:vc animated:NO];
 
 /**
  dismissViewController Animated
@@ -299,6 +307,13 @@
  */
 +(void)presentVC:(UIViewController *)vc animated:(BOOL)animated;
 
+/**
+ 从window.rootViewController弹出一个VC对象
+ 
+ @param vc ViewController对象
+ @param animated 是否动画
+ */
++(void)rootVCpresentVC:(UIViewController *)vc animated:(BOOL)animated;
 
 /**
  收回弹出的VC

@@ -10,7 +10,7 @@
 
 @interface BVC : UIViewController
 
-@property(nonatomic,copy)NSString *titleName;
+@property(nonatomic,copy)NSString *titleStr;
 
 
 @end

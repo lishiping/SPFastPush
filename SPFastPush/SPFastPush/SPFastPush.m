@@ -18,37 +18,6 @@
 
 #import "SPFastPush.h"
 
-#define SP_IS_KIND_OF(obj, cls) [(obj) isKindOfClass:[cls class]]
-
-#define SP_IS_MEMBER_OF(obj, cls) [(obj) isMemberOfClass:[cls class]]
-
-// (is main thread)判断是否主线程
-#define SP_IS_MAIN_THREAD                [NSThread isMainThread]
-
-// (run in main thread)使block在主线程中运行
-#define SP_RUN_MAIN_THREAD(block)    if (SP_IS_MAIN_THREAD) {block} else {dispatch_async(dispatch_get_main_queue(), ^{block});}
-
-
-#if DEBUG
-
-#define SP_LOG(...) NSLog(__VA_ARGS__)
-
-#define SP_ASSERT(obj)               assert((obj))
-
-#define SP_ASSERT_CLASS(obj, cls)  SP_ASSERT((obj) && SP_IS_KIND_OF(obj,cls))//断言实例有值和类型
-
-
-#else
-
-#define SP_LOG(...)
-
-#define SP_ASSERT(obj)
-
-#define SP_ASSERT_CLASS(obj, cls)
-
-#endif
-
-
 @interface SPFastPush ()
 {
 }
@@ -65,10 +34,6 @@
     //创建当前类并加入属性
     UIViewController *ret = [[self class] createVC:vcClassName withParams:params];
     
-    SP_ASSERT(ret);
-    
-    SP_LOG(@"push class is-----%s",object_getClassName(ret));
-    
     [[self class] pushVC:ret animated:animated];
     
     return (ret);
@@ -76,23 +41,23 @@
 
 + (void)pushVC:(UIViewController *)vc animated:(BOOL)animated
 {
-    SP_ASSERT_CLASS(vc, UIViewController);
+    NSAssert([vc isKindOfClass:[UIViewController class]], @"vc is not VC");
     
-    if (SP_IS_KIND_OF(vc, UIViewController))
+    if ([vc isKindOfClass:[UIViewController class]])
     {
         //find NavigationController
         UINavigationController *navc = [[self class] getCurrentNavC];
         
-        if (navc) {
-            if (navc.viewControllers.count) {
+        if (navc)
+        {
+            if (navc.viewControllers.count)
+            {
                 vc.hidesBottomBarWhenPushed = YES;
             }
             
-            SP_RUN_MAIN_THREAD([navc pushViewController:vc animated:animated];);
-            
-        }else
-        {
-            SP_LOG(@"no find NavigationController,can not push!!!");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [navc pushViewController:vc animated:animated];
+            });
         }
     }
 }
@@ -102,7 +67,9 @@
     UINavigationController *navc = [[self class] getCurrentNavC];
     if (navc && navc.viewControllers.count>1)
     {
-        SP_RUN_MAIN_THREAD([navc popViewControllerAnimated:animated];);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [navc popViewControllerAnimated:animated];
+        });
     }
 }
 
@@ -111,82 +78,68 @@
     UINavigationController *navc = [[self class] getCurrentNavC];
     if (navc && navc.viewControllers.count>1)
     {
-        SP_RUN_MAIN_THREAD([navc popToRootViewControllerAnimated:animated];);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [navc popToRootViewControllerAnimated:animated];
+        });
     }
 }
+
 + (void)popToVCAtIndex:(NSInteger)index animated:(BOOL)animated
 {
-    SP_ASSERT(index>=0);
-    
     UINavigationController *navc = [[self class] getCurrentNavC];
+    
+    NSAssert(navc && index>=0 && navc.viewControllers.count>1 && navc.viewControllers.count-1>index, @"can not pop!!!");
+    
     //导航栈内一定要超过1个vc，否则不能pop
-    if (navc && index>=0 && navc.viewControllers.count>1 && navc.viewControllers.count>index)
+    //从导航栈顶跳到栈顶不成立，所以navc.viewControllers.count-1>index
+    if (navc && index>=0 && navc.viewControllers.count>1 && navc.viewControllers.count-1>index)
     {
-        //从导航栈顶跳到栈顶不成立，所以返回
-        if (navc.viewControllers.count-1==index) {
-            SP_LOG(@"NavigationController.viewcontrollers.cout==1,can not pop!!!");
-            return;
-        }
-        
         UIViewController *obj = [navc.viewControllers objectAtIndex:index];
         
-        SP_ASSERT_CLASS(obj, UIViewController);
+        NSAssert([obj isKindOfClass:[UIViewController class]], @"obj is not VC");
         
-        if (obj) {
-            
-            SP_LOG(@"pop to class is-----%s",object_getClassName(obj));
-            
-            SP_RUN_MAIN_THREAD([navc popToViewController:obj animated:animated];);
-        }
-        else
+        if (obj)
         {
-            SP_LOG(@"not find vc object,can not pop!!!");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [navc popToViewController:obj animated:animated];
+            });
         }
-    }
-    else
-    {
-        SP_LOG(@"can not pop!!!");
     }
 }
 
 + (void)popToVCWithClassName:(NSString *)className animated:(BOOL)animated
 {
-    SP_ASSERT_CLASS(className, NSString);
+    NSAssert([className isKindOfClass:[NSString class]] && className.length>0, @"className string error!");
     
-    if (!SP_IS_KIND_OF(className, NSString)||className.length==0) {
-        SP_LOG(@"className string error!!!!!-----");
-        return;
-    }
-    NSString *name = [className stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
-    Class cls = NSClassFromString(name);
-    
-    if (!cls || ![cls isSubclassOfClass:[UIViewController class]])
+    if ([className isKindOfClass:[NSString class]] && className.length>0)
     {
-        SP_LOG(@"%@ class not Find!!!!!-----", className);
-        return;
-    }
-    
-    UINavigationController *navc = [[self class] getCurrentNavC];
-    
-    //导航栈内一定要超过1个vc，否则不能pop
-    if (navc && navc.viewControllers.count>1)
-    {
-        NSArray *vcArr = navc.viewControllers;
+        NSString *name = [className stringByReplacingOccurrencesOfString:@" " withString:@""];
         
-        for (UIViewController *vcobj in vcArr) {
+        Class cls = NSClassFromString(name);
+        
+        if (cls && [cls isSubclassOfClass:[UIViewController class]])
+        {
+            UINavigationController *navc = [[self class] getCurrentNavC];
             
-            SP_ASSERT_CLASS(vcobj , UIViewController);
-            
-            if (SP_IS_MEMBER_OF(vcobj, cls)) {
+            //导航栈内一定要超过1个vc，否则不能pop
+            if (navc && navc.viewControllers.count>1)
+            {
+                NSArray *vcArr = navc.viewControllers;
                 
-                SP_LOG(@"pop to class is-----%@",className);
-                
-                SP_RUN_MAIN_THREAD([navc popToViewController:vcobj animated:animated];);
-                return;
+                for (UIViewController *vcobj in vcArr) {
+                    
+                    if ([vcobj isMemberOfClass:[cls class]])
+                    {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [navc popToViewController:vcobj animated:animated];
+                        });
+                        return;
+                    }
+                }
             }
         }
     }
+    
 }
 
 #pragma mark - present & dismiss
@@ -196,10 +149,6 @@
     //创建当前类并加入属性
     UIViewController *ret = [[self class] createVC:vcClassName withParams:params];
     
-    SP_ASSERT(ret);
-    
-    SP_LOG(@"present class is-----%s",object_getClassName(ret));
-    
     [[self class] presentVC:ret animated:animated];
     
     return  ret;
@@ -207,14 +156,32 @@
 
 +(void)presentVC:(UIViewController *)vc animated:(BOOL)animated
 {
-    SP_ASSERT_CLASS(vc, UIViewController);
+    NSAssert([vc isKindOfClass:[UIViewController class]], @"vc is not VC");
     
     if ([vc isKindOfClass:[UIViewController class]]) {
         
         UIViewController *topVC = [[self class] topVC];
         
         if (topVC) {
-            SP_RUN_MAIN_THREAD([topVC presentViewController:vc animated:animated completion:nil];);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [topVC presentViewController:vc animated:animated completion:nil];
+            });
+        }
+    }
+}
+
++(void)rootVCpresentVC:(UIViewController *)vc animated:(BOOL)animated
+{
+    NSAssert([vc isKindOfClass:[UIViewController class]], @"vc is not VC");
+    
+    if ([vc isKindOfClass:[UIViewController class]]) {
+        
+        UIViewController *rootVC = [[self class] rootVC];
+        
+        if (rootVC) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [rootVC presentViewController:vc animated:animated completion:nil];
+            });
         }
     }
 }
@@ -224,7 +191,9 @@
     UIViewController *vc = [[self class] getPresentingVC];
     if (vc)
     {
-        SP_RUN_MAIN_THREAD([vc dismissViewControllerAnimated:animated completion:nil];);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [vc dismissViewControllerAnimated:animated completion:nil];
+        });
     }
 }
 
@@ -232,54 +201,53 @@
 
 + (UIViewController *)createVC:(NSString *)className withParams:(NSDictionary *)params
 {
-    SP_ASSERT_CLASS(className, NSString);
-    
-    if (!SP_IS_KIND_OF(className, NSString)||className.length==0) {
-        SP_LOG(@"className string error!!!!!-----");
-        return nil;
-    }
-    
     UIViewController *ret = nil;
-    NSString *name = [className stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    Class cls = NSClassFromString(name);
+    NSAssert(([className isKindOfClass:[NSString class]] && className.length>0), @"className string error!");
     
-    if (cls && [cls isSubclassOfClass:[UIViewController class]]) {
+    if ([className isKindOfClass:[NSString class]] && className.length>0)
+    {
+        NSString *name = [className stringByReplacingOccurrencesOfString:@" " withString:@""];
         
-        // create viewController
-        UIViewController *vc = [[cls alloc] init];
+        Class cls = NSClassFromString(name);
         
-        // kvc set params;
-        ret = [[self class] object:vc kvc_setParams:params];
+        NSAssert((cls && [cls isSubclassOfClass:[UIViewController class]]), @"class is not ViewController");
         
-    } else {
-        SP_LOG(@"%@ class not Find!!!!!-----", className);
+        if (cls && [cls isSubclassOfClass:[UIViewController class]]) {
+            
+            // create viewController
+            UIViewController *vc = [[cls alloc] init];
+            
+            // kvc set params;
+            ret = [[self class] object:vc kvc_setParams:params];
+        }
     }
     return (ret);
 }
 
 + (id)object:(id)object kvc_setParams:(NSDictionary *)params;
 {
-    if (SP_IS_KIND_OF(params, NSDictionary) && (params.count>0))
+    if ([params isKindOfClass:[NSDictionary class]] && (params.count>0))
     {
         @try {
             [object setValuesForKeysWithDictionary:params];
         } @catch (NSException *exception) {
-            SP_LOG(@"KVC Set Value For Key error:%@", exception);
+            NSAssert(nil, exception.description);
         } @finally {
         }
     }
     
     return object;
 }
+
 #pragma mark - get VC
 +(UINavigationController *)getCurrentNavC
 {
     UINavigationController *navc = [[self class] topVC].navigationController;
     
-    SP_ASSERT_CLASS(navc, UINavigationController);
+    NSAssert([navc isKindOfClass:[UINavigationController class]], @"navc is not UINavigationController");
     
-    return (SP_IS_KIND_OF(navc, UINavigationController) ? navc : nil);
+    return ([navc isKindOfClass:[UINavigationController class]] ? navc : nil);
 }
 
 +(UIViewController *)getPresentingVC
@@ -301,7 +269,7 @@
         }
     }
     
-    SP_ASSERT_CLASS(ret, UIViewController);
+    NSAssert([ret isKindOfClass:[UINavigationController class]],nil);
     
     return ret;
 }
@@ -312,10 +280,10 @@
     UIViewController *vc = [[self class] rootVC];
     while (vc) {
         ret = vc;
-        if (SP_IS_KIND_OF(ret, UINavigationController))
+        if ([ret isKindOfClass:[UINavigationController class]])
         {
             vc = [(UINavigationController *)vc visibleViewController];
-        } else if (SP_IS_KIND_OF(ret, UITabBarController))
+        } else if ([ret isKindOfClass:[UITabBarController class]])
         {
             vc = [(UITabBarController *)vc selectedViewController];
         } else
@@ -324,16 +292,16 @@
         }
     }
     
-    SP_ASSERT_CLASS(ret, UIViewController);
+    NSAssert([ret isKindOfClass:[UIViewController class]],nil);
     
-    return (SP_IS_KIND_OF(ret, UIViewController) ? ret : nil);
+    return ([ret isKindOfClass:[UIViewController class]] ? ret : nil);
 }
 
 + (UIViewController *)rootVC
 {
     UIViewController  *vc = [[self class] mainWindow].rootViewController;
     
-    SP_ASSERT(vc);
+    NSAssert([vc isKindOfClass:[UIViewController class]],nil);
     
     return (vc);
 }
@@ -347,9 +315,16 @@
     if ([app.delegate respondsToSelector:@selector(window)]) {
         window = [app.delegate window];
     }
-    else if ([app windows].count>0)
-    {
-        window = [[app windows] objectAtIndex:0];
+    
+    if (!window) {
+        if ([app windows].count>0)
+        {
+            window = [[app windows] objectAtIndex:0];
+        }
+    }
+    
+    if (!window) {
+        window = [UIApplication sharedApplication].keyWindow;
     }
     
     return window;
@@ -359,9 +334,9 @@
 {
     UITabBarController *tab = (UITabBarController *)[[self class] rootVC];
     
-    SP_ASSERT_CLASS(tab, UITabBarController);
+    NSAssert([tab isKindOfClass:[UITabBarController class]],nil);
     
-    return (SP_IS_KIND_OF(tab, UITabBarController) ? tab : nil);
+    return ([tab isKindOfClass:[UITabBarController class]] ? tab : nil);
 }
 
 + (BOOL)currentTabVCSetToSelectIndex:(NSUInteger)selectIndex
@@ -376,7 +351,7 @@
     return NO;
 }
 
-#pragma mark - APP打开系统URL
+#pragma mark - APP Open URL
 
 +(void)appOpenURLString:(NSString *)urlString option:(NSDictionary*)option completionHandler:(void (^ __nullable)(BOOL success))completion
 {
@@ -517,7 +492,6 @@
     
     [self appOpenURLString:urlString option:@{} completionHandler:nil];
 }
-
 
 //调取系统拨打电话
 +(void)appOpenTelPhone:(NSString *)phoneNumber needAlert:(BOOL)isNeedAlert

@@ -18,7 +18,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor greenColor];
-    self.title = _titleName;
+    NSLog(@"标题%@",_titleStr);
+    self.title = _titleStr;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(100, 100, 200, 50);
     [button setTitle:@"back" forState:UIControlStateNormal];

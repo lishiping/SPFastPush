@@ -43,11 +43,6 @@
 
 -(void)presentVC
 {
-    //    SP_PRESENT_VC_BY_CLASSNAME(@"CVC", @{@"titleStr":@"标题CVC"});
-    
-    //    CVC *cvc = [[CVC alloc] init];
-    //    cvc.titleStr = @"标题CVC";
-    
     UIViewController *cvc = SP_CREATE_VC_BY_CLASSNAME(@"CVC", @{@"titleStr":@"标题CVC"})
     SP_PRESENT_VC(cvc)
 }
