@@ -45,11 +45,9 @@
 -(void)appOPenURL
 {
     
-//    SP_APP_OPEN_URL_STRING(@"sinaweibo://gotohome?grouptype=1")
-    //    [SPFastPush appOpenURL:[NSURL URLWithString:@"sinaweibo://gotohome?grouptype=1"] option:@{} completionHandler:nil];
+//        SP_APP_OPEN_SYSTEM_SETTING_LOCATION
     
-    
-        SP_APP_OPEN_SYSTEM_SETTING_LOCATION
+    SP_APP_OPEN_URL([NSURL URLWithString:@"https://www.baidu.com/"])
 
 }
 - (void)didReceiveMemoryWarning {

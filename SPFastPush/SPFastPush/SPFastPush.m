@@ -149,12 +149,12 @@
     //创建当前类并加入属性
     UIViewController *ret = [[self class] createVC:vcClassName withParams:params];
     
-    [[self class] presentVC:ret animated:animated];
+    [[self class] presentVC:ret animated:animated completion:nil];
     
     return  ret;
 }
 
-+(void)presentVC:(UIViewController *)vc animated:(BOOL)animated
++(void)presentVC:(UIViewController *)vc animated:(BOOL)animated completion:(void (^)(void))completion
 {
     NSAssert([vc isKindOfClass:[UIViewController class]], @"vc is not VC");
     
@@ -164,13 +164,13 @@
         
         if (topVC) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [topVC presentViewController:vc animated:animated completion:nil];
+                [topVC presentViewController:vc animated:animated completion:completion];
             });
         }
     }
 }
 
-+(void)rootVCpresentVC:(UIViewController *)vc animated:(BOOL)animated
++(void)rootVCpresentVC:(UIViewController *)vc animated:(BOOL)animated completion:(void (^)(void))completion
 {
     NSAssert([vc isKindOfClass:[UIViewController class]], @"vc is not VC");
     
@@ -180,19 +180,19 @@
         
         if (rootVC) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [rootVC presentViewController:vc animated:animated completion:nil];
+                [rootVC presentViewController:vc animated:animated completion:completion];
             });
         }
     }
 }
 
-+ (void)dismissVCAnimated:(BOOL)animated
++ (void)dismissVCAnimated:(BOOL)animated completion:(void (^)(void))completion
 {
     UIViewController *vc = [[self class] getPresentingVC];
     if (vc)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [vc dismissViewControllerAnimated:animated completion:nil];
+            [vc dismissViewControllerAnimated:animated completion:completion];
         });
     }
 }
@@ -355,12 +355,12 @@
 
 +(void)appOpenURLString:(NSString *)urlString option:(NSDictionary*)option completionHandler:(void (^ __nullable)(BOOL success))completion
 {
-    if ([urlString isKindOfClass:[NSString class]]&&urlString.length>0) {
+    if ([urlString isKindOfClass:[NSString class]] && urlString.length>0) {
         [self appOpenURL:[NSURL URLWithString:urlString] option:option completionHandler:completion];
     }
 }
 
-+(void)appOpenURL:(NSURL *)url option:(NSDictionary*)option completionHandler:(void (^ __nullable)(BOOL success))completion
++(void)appOpenURL:(NSURL *)url option:(NSDictionary*)option completionHandler:(void (^)(BOOL success))completion
 {
     if (url && [[UIApplication sharedApplication] canOpenURL:url])
     {

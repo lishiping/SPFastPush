@@ -18,7 +18,7 @@
 
 #import <UIKit/UIKit.h>
 
-//李世平，version（0.7.0）
+//李世平，version（0.8.0）
 
 /*********************push pop************************/
 
@@ -115,16 +115,16 @@
 #define SP_PRESENT_VC_BY_CLASSNAME_NO_ANIMATED(className, dict)   [SPFastPush presentVC:className params:(dict) animated:NO];
 
 
-#define SP_PRESENT_VC(vc)               [SPFastPush presentVC:vc animated:YES];
+#define SP_PRESENT_VC(vc)     [SPFastPush presentVC:vc animated:YES completion:nil];
 
-#define SP_PRESENT_VC_NO_ANIMATED(vc)   [SPFastPush presentVC:vc animated:NO];
+#define SP_PRESENT_VC_NO_ANIMATED(vc)   [SPFastPush presentVC:vc animated:NO completion:nil];
 
 /**
  从window.rootViewController弹出一个VC对象
  */
-#define SP_ROOT_PRESENT_VC(vc)               [SPFastPush rootVCpresentVC:vc animated:YES];
+#define SP_ROOT_PRESENT_VC(vc)  [SPFastPush rootVCpresentVC:vc animated:YES completion:nil];
 
-#define SP_ROOT_PRESENT_VC_NO_ANIMATED(vc)   [SPFastPush rootVCpresentVC:vc animated:NO];
+#define SP_ROOT_PRESENT_VC_NO_ANIMATED(vc) [SPFastPush rootVCpresentVC:vc animated:NO completion:nil];
 
 /**
  dismissViewController Animated
@@ -132,9 +132,9 @@
 
  @return vc object
  */
-#define SP_DISMISS_VC               [SPFastPush dismissVCAnimated:YES];
+#define SP_DISMISS_VC               [SPFastPush dismissVCAnimated:YES completion:nil];
 
-#define SP_DISMISS_VC_NO_ANIMATED   [SPFastPush dismissVCAnimated:NO];
+#define SP_DISMISS_VC_NO_ANIMATED   [SPFastPush dismissVCAnimated:NO completion:nil];
 
 
 /*********************Create VC Object************************/
@@ -157,7 +157,7 @@
  
  @return 导航控制器对象
  */
-#define SP_GET_CURRENT_NAVC   [SPFastPush getCurrentNavC];
+#define SP_GET_CURRENT_NAVC   [SPFastPush getCurrentNavC]
 
 
 /**
@@ -166,14 +166,14 @@
  
  @return vc object
  */
-#define SP_GET_TOP_VC   [SPFastPush topVC];
+#define SP_GET_TOP_VC   [SPFastPush topVC]
 
 /**
  获取根部的tabBarController
  
  @return tabBarController
  */
-#define SP_GET_CURRENT_TABVC   [SPFastPush getCurrentTabVC];
+#define SP_GET_CURRENT_TABVC   [SPFastPush getCurrentTabVC]
 
 /**
  设置根部tabBarController的selectIndex
@@ -189,7 +189,7 @@
  
  @return rootViewController
  */
-#define SP_GET_ROOT_VC   [SPFastPush rootVC];
+#define SP_GET_ROOT_VC   [SPFastPush rootVC]
 
 /**
  Get window
@@ -197,18 +197,20 @@
  
  @return 主窗口
  */
-#define SP_GET_MAIN_WINDOW   [SPFastPush mainWindow];
+#define SP_GET_MAIN_WINDOW   [SPFastPush mainWindow]
 
 
 /***************open URL*******************/
 
 
 /**
- APP打开系统或者其他APP的方法，传入其他app的scheme等方式
+ APP打开系统或者其他APP的方法，传入其他app的scheme等方式,或者要打开系统的网页等
 
  @param urlString 打开的urlString
  */
 #define SP_APP_OPEN_URL_STRING(urlString) [SPFastPush appOpenURLString:urlString option:@{} completionHandler:nil];
+
+#define SP_APP_OPEN_URL(url) [SPFastPush appOpenURL:url option:@{} completionHandler:nil];
 
 /**
  打开系统通知
@@ -305,7 +307,7 @@
  @param vc ViewController对象
  @param animated 是否动画
  */
-+(void)presentVC:(UIViewController *)vc animated:(BOOL)animated;
++(void)presentVC:(UIViewController *)vc animated:(BOOL)animated completion:(void (^)(void))completion;
 
 /**
  从window.rootViewController弹出一个VC对象
@@ -313,12 +315,12 @@
  @param vc ViewController对象
  @param animated 是否动画
  */
-+(void)rootVCpresentVC:(UIViewController *)vc animated:(BOOL)animated;
++(void)rootVCpresentVC:(UIViewController *)vc animated:(BOOL)animated completion:(void (^)(void))completion;
 
 /**
  收回弹出的VC
  */
-+ (void)dismissVCAnimated:(BOOL)animated;
++ (void)dismissVCAnimated:(BOOL)animated completion:(void (^)(void))completion;
 
 #pragma mark - create VC object 
 
@@ -412,7 +414,7 @@ Get the current navigation controller by  traversing
  @param option 可选参数
  @param completion 完成回调
  */
-+(void)appOpenURL:(NSURL *)url option:(NSDictionary*)option completionHandler:(void (^ __nullable)(BOOL success))completion;
++(void)appOpenURL:(NSURL *)url option:(NSDictionary*)option completionHandler:(void (^)(BOOL success))completion;
 
 //打开系统通知
 +(void)appOpenSystemSettingNotification;
