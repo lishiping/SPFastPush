@@ -39,7 +39,7 @@
     return (ret);
 }
 
-+ (void)pushVC:(UIViewController *)vc animated:(BOOL)animated
++ (BOOL)pushVC:(UIViewController *)vc animated:(BOOL)animated
 {
     NSAssert([vc isKindOfClass:[UIViewController class]], @"vc is not VC");
     
@@ -58,11 +58,13 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [navc pushViewController:vc animated:animated];
             });
+            return YES;
         }
     }
+    return NO;
 }
 
-+ (void)popToLastVCWithAnimated:(BOOL)animated
++ (BOOL)popToLastVCWithAnimated:(BOOL)animated
 {
     UINavigationController *navc = [[self class] getCurrentNavC];
     if (navc && navc.viewControllers.count>1)
@@ -70,10 +72,12 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [navc popViewControllerAnimated:animated];
         });
+        return YES;
     }
+    return NO;
 }
 
-+ (void)popToRootVCWithAnimated:(BOOL)animated
++ (BOOL)popToRootVCWithAnimated:(BOOL)animated
 {
     UINavigationController *navc = [[self class] getCurrentNavC];
     if (navc && navc.viewControllers.count>1)
@@ -81,10 +85,12 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [navc popToRootViewControllerAnimated:animated];
         });
+        return YES;
     }
+    return NO;
 }
 
-+ (void)popToVCAtIndex:(NSInteger)index animated:(BOOL)animated
++ (BOOL)popToVCAtIndex:(NSInteger)index animated:(BOOL)animated
 {
     UINavigationController *navc = [[self class] getCurrentNavC];
     
@@ -103,11 +109,29 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [navc popToViewController:obj animated:animated];
             });
+            return YES;
         }
     }
+    return NO;
 }
 
-+ (void)popToVCWithClassName:(NSString *)className animated:(BOOL)animated
++ (BOOL)popToVCWithClassName:(NSString *)className animated:(BOOL)animated
+{
+   UIViewController *vcobj =[self navigationStackHas:className];
+    UINavigationController *navc = [self getCurrentNavC];
+
+    if (vcobj && navc)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [navc popToViewController:vcobj animated:animated];
+        });
+        return YES;
+    }
+    
+    return NO;
+}
+
++ (id)navigationStackHas:(NSString *)className
 {
     NSAssert([className isKindOfClass:[NSString class]] && className.length>0, @"className string error!");
     
@@ -130,16 +154,14 @@
                     
                     if ([vcobj isMemberOfClass:[cls class]])
                     {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [navc popToViewController:vcobj animated:animated];
-                        });
-                        return;
+                        return vcobj;
                     }
                 }
             }
         }
     }
     
+    return nil;
 }
 
 #pragma mark - present & dismiss

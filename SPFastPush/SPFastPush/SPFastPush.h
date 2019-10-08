@@ -18,7 +18,7 @@
 
 #import <UIKit/UIKit.h>
 
-//李世平，version（0.8.0）
+//李世平
 
 /*********************push pop************************/
 
@@ -94,6 +94,7 @@
 
 #define SP_POP_TO_VC_BY_CLASSNAME_ANIMATION(className)   [SPFastPush popToVCWithClassName:(className) animated:YES];
 
+#define SP_NAVISTACK_HAS_BY_CLASSNAME(className)   [SPFastPush navigationStackHas:(className)];
 
 
 /*********************present dismiss************************/
@@ -251,7 +252,7 @@
  @param animated  是否动画
  @return VC对象
  */
-+ (UIViewController *)pushVCWithClassName:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated;
++ (UIViewController *_Nonnull)pushVCWithClassName:(NSString *_Nonnull)vcClassName params:(NSDictionary *_Nullable)params animated:(BOOL)animated;
 
 /**
  导航控制器push一个vc对象
@@ -259,19 +260,19 @@
  @param vc 实例化的vc对象
  @param animated  是否动画
  */
-+ (void)pushVC:(UIViewController *)vc animated:(BOOL)animated;
++ (BOOL)pushVC:(UIViewController *_Nonnull)vc animated:(BOOL)animated;
 
 /**
  返回上一个VC
  */
-+ (void)popToLastVCWithAnimated:(BOOL)animated;
++ (BOOL)popToLastVCWithAnimated:(BOOL)animated;
 
 /**
  返回到导航器根视图控制器
 
  @param animated 是否动画
  */
-+ (void)popToRootVCWithAnimated:(BOOL)animated;
++ (BOOL)popToRootVCWithAnimated:(BOOL)animated;
 
 /**
  导航栈内返回指定位置的方法
@@ -279,7 +280,7 @@
  @param index    导航栈元素索引
  @param animated 有无动画
  */
-+ (void)popToVCAtIndex:(NSInteger)index animated:(BOOL)animated;
++ (BOOL)popToVCAtIndex:(NSInteger)index animated:(BOOL)animated;
 
 /**
  导航栈返回到指定输入的类名（带动画），如果一个导航栈里面有多个相同类的VC对象在里面则返回离根部最近的那个VC（导航栈里有相同类的实例对象通常不符合逻辑）
@@ -287,7 +288,17 @@
  @param className 类名
  @param animated  是否需要动画
  */
-+(void)popToVCWithClassName:(NSString*)className animated:(BOOL)animated;
++(BOOL)popToVCWithClassName:(NSString*_Nonnull)className animated:(BOOL)animated;
+
+
+/**
+ 导航栈是否有名称为classname的VC对象如果有返回YES
+
+ @param className VC类名
+ @return 对象
+ */
++ (id _Nullable)navigationStackHas:(NSString *_Nonnull)className;
+
 
 #pragma mark - present & dismiss
 
@@ -299,7 +310,7 @@
  @param animated 是否动画
  @return 返回弹出的VC对象
  */
-+(UIViewController *)presentVC:(NSString *)vcClassName params:(NSDictionary *)params animated:(BOOL)animated;
++(nonnull UIViewController *)presentVC:(nonnull NSString *)vcClassName params:(nullable NSDictionary *)params animated:(BOOL)animated;
 
 /**
  弹出一个VC对象
@@ -307,7 +318,7 @@
  @param vc ViewController对象
  @param animated 是否动画
  */
-+(void)presentVC:(UIViewController *)vc animated:(BOOL)animated completion:(void (^)(void))completion;
++(void)presentVC:(nonnull UIViewController *)vc animated:(BOOL)animated completion:(void (^_Nullable)(void))completion;
 
 /**
  从window.rootViewController弹出一个VC对象
@@ -315,12 +326,12 @@
  @param vc ViewController对象
  @param animated 是否动画
  */
-+(void)rootVCpresentVC:(UIViewController *)vc animated:(BOOL)animated completion:(void (^)(void))completion;
++(void)rootVCpresentVC:(nonnull UIViewController *)vc animated:(BOOL)animated completion:(void (^_Nullable)(void))completion;
 
 /**
  收回弹出的VC
  */
-+ (void)dismissVCAnimated:(BOOL)animated completion:(void (^)(void))completion;
++ (void)dismissVCAnimated:(BOOL)animated completion:(void (^_Nullable)(void))completion;
 
 #pragma mark - create VC object 
 
@@ -331,7 +342,7 @@
  @param params 赋值参数
  @return 返回VC对象
  */
-+ (UIViewController *)createVC:(NSString *)className withParams:(NSDictionary *)params;
++ (UIViewController *_Nonnull)createVC:(nonnull NSString *)className withParams:(NSDictionary *_Nullable)params;
 
 #pragma mark - get VC
 
@@ -341,7 +352,7 @@ Get the current navigation controller by  traversing
 
  @return 导航控制器对象
  */
-+(UINavigationController *)getCurrentNavC;
++(nullable UINavigationController *)getCurrentNavC;
 
 /**
  Get the current PresentingViewController by  traversing
@@ -349,7 +360,7 @@ Get the current navigation controller by  traversing
  
  @return 导航控制器对象
  */
-+(UIViewController *)getPresentingVC;
++(nullable UIViewController *)getPresentingVC;
 
 
 /**
@@ -358,14 +369,14 @@ Get the current navigation controller by  traversing
 
  @return vc object
  */
-+ (UIViewController *)topVC;
++ (nullable UIViewController *)topVC;
 
 /**
  获取根部的tabBarController
  
  @return tabBarController
  */
-+ (UITabBarController *)getCurrentTabVC;
++ (nullable UITabBarController *)getCurrentTabVC;
 
 
 /**
@@ -374,7 +385,7 @@ Get the current navigation controller by  traversing
 
  @return rootViewController
  */
-+ (UIViewController *)rootVC;
++ (nullable UIViewController *)rootVC;
 
 /**
  Get window
@@ -382,7 +393,7 @@ Get the current navigation controller by  traversing
 
  @return 主窗口
  */
-+ (UIWindow*)mainWindow;
++ (nullable UIWindow*)mainWindow;
 
 #pragma mark - TabBarViewController
 
@@ -405,7 +416,7 @@ Get the current navigation controller by  traversing
  @param option 可选参数
  @param completion 完成回调
  */
-+(void)appOpenURLString:(NSString *)urlString option:(NSDictionary*)option completionHandler:(void (^ __nullable)(BOOL success))completion;
++(void)appOpenURLString:(nonnull NSString *)urlString option:(NSDictionary*_Nullable)option completionHandler:(void (^ __nullable)(BOOL success))completion;
 
 /**
  UIApplication打开URL
@@ -414,7 +425,7 @@ Get the current navigation controller by  traversing
  @param option 可选参数
  @param completion 完成回调
  */
-+(void)appOpenURL:(NSURL *)url option:(NSDictionary*)option completionHandler:(void (^)(BOOL success))completion;
++(void)appOpenURL:(nonnull NSURL *)url option:(NSDictionary*_Nullable)option completionHandler:(void (^_Nullable)(BOOL success))completion;
 
 //打开系统通知
 +(void)appOpenSystemSettingNotification;
@@ -431,7 +442,7 @@ Get the current navigation controller by  traversing
  @param phoneNumber 电话号码
  @param isNeedAlert 是否需要弹出警告框确认
  */
-+(void)appOpenTelPhone:(NSString *)phoneNumber needAlert:(BOOL)isNeedAlert;
++(void)appOpenTelPhone:(nonnull NSString *)phoneNumber needAlert:(BOOL)isNeedAlert;
 
 
 @end
