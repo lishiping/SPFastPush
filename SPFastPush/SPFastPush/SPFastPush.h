@@ -94,7 +94,7 @@
 
 #define SP_POP_TO_VC_BY_CLASSNAME_ANIMATION(className)   [SPFastPush popToVCWithClassName:(className) animated:YES];
 
-#define SP_NAVISTACK_HAS_BY_CLASSNAME(className)   [SPFastPush navigationStackHas:(className)];
+#define SP_NAVISTACK_HAS_BY_CLASSNAME(className)   [SPFastPush navigationStackHas:(className)]
 
 
 /*********************present dismiss************************/
