@@ -427,22 +427,23 @@ Get the current navigation controller by  traversing
  */
 +(void)appOpenURL:(nonnull NSURL *)url option:(NSDictionary*_Nullable)option completionHandler:(void (^_Nullable)(BOOL success))completion;
 
-//打开系统通知
-+(void)appOpenSystemSettingNotification;
 
-//打开系统定位
-+(void)appOpenSystemSettingLocation;
-
-//打开系统设置
-+(void)appOpenSystemSetting;
-
-/**
- 调用系统拨打电话
- 
- @param phoneNumber 电话号码
- @param isNeedAlert 是否需要弹出警告框确认
- */
-+(void)appOpenTelPhone:(nonnull NSString *)phoneNumber needAlert:(BOOL)isNeedAlert;
+////打开系统通知
+//+(void)appOpenSystemSettingNotification;
+//
+////打开系统定位
+//+(void)appOpenSystemSettingLocation;
+//
+////打开系统设置
+//+(void)appOpenSystemSetting;
+//
+///**
+// 调用系统拨打电话
+//
+// @param phoneNumber 电话号码
+// @param isNeedAlert 是否需要弹出警告框确认
+// */
+//+(void)appOpenTelPhone:(nonnull NSString *)phoneNumber needAlert:(BOOL)isNeedAlert;
 
 
 @end

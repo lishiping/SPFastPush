@@ -478,52 +478,52 @@
  
  */
 
-//打开系统通知
-+(void)appOpenSystemSettingNotification
-{
-    //ios10之前可以直接跳到具体页面
-    NSString *urlString = @"prefs:root=NOTIFICATIONS_ID";
-    if ([UIDevice currentDevice].systemVersion.floatValue>=10.0f) {
-        //ios10之后只能跳到设置页面
-        urlString = @"App-Prefs:root=NOTIFICATIONS_ID";
-    }
-    
-    [self appOpenURLString:urlString option:@{} completionHandler:nil];
-}
-
-//打开系统定位
-+(void)appOpenSystemSettingLocation
-{
-    //ios10之前可以直接跳到定位的具体页面
-    NSString *urlString = @"prefs:root=LOCATION_SERVICES";
-    if ([UIDevice currentDevice].systemVersion.floatValue>=10.0f) {
-        //ios10之后只能跳到设置页面
-        urlString = @"App-Prefs:root=LOCATION_SERVICES";
-    }
-    
-    [self appOpenURLString:urlString option:@{} completionHandler:nil];
-}
-
-//打开系统设置
-+(void)appOpenSystemSetting
-{
-    NSString *urlString = @"prefs:root";
-    if ([UIDevice currentDevice].systemVersion.floatValue>=8.0f) {
-        urlString = UIApplicationOpenSettingsURLString;
-    }
-    
-    [self appOpenURLString:urlString option:@{} completionHandler:nil];
-}
-
-//调取系统拨打电话
-+(void)appOpenTelPhone:(NSString *)phoneNumber needAlert:(BOOL)isNeedAlert
-{
-    if ([phoneNumber isKindOfClass:[NSString class]] && phoneNumber.length > 0)
-    {
-        NSString *tel = [NSString stringWithFormat:(isNeedAlert ? @"telprompt://%@" : @"tel://%@"), phoneNumber];
-        [[self class] appOpenURLString:tel option:nil completionHandler:nil];
-    }
-}
+////打开系统通知
+//+(void)appOpenSystemSettingNotification
+//{
+//    //ios10之前可以直接跳到具体页面
+//    NSString *urlString = @"prefs:root=NOTIFICATIONS_ID";
+//    if ([UIDevice currentDevice].systemVersion.floatValue>=10.0f) {
+//        //ios10之后只能跳到设置页面
+//        urlString = @"App-Prefs:root=NOTIFICATIONS_ID";
+//    }
+//
+//    [self appOpenURLString:urlString option:@{} completionHandler:nil];
+//}
+//
+////打开系统定位
+//+(void)appOpenSystemSettingLocation
+//{
+//    //ios10之前可以直接跳到定位的具体页面
+//    NSString *urlString = @"prefs:root=LOCATION_SERVICES";
+//    if ([UIDevice currentDevice].systemVersion.floatValue>=10.0f) {
+//        //ios10之后只能跳到设置页面
+//        urlString = @"App-Prefs:root=LOCATION_SERVICES";
+//    }
+//
+//    [self appOpenURLString:urlString option:@{} completionHandler:nil];
+//}
+//
+////打开系统设置
+//+(void)appOpenSystemSetting
+//{
+//    NSString *urlString = @"prefs:root";
+//    if ([UIDevice currentDevice].systemVersion.floatValue>=8.0f) {
+//        urlString = UIApplicationOpenSettingsURLString;
+//    }
+//
+//    [self appOpenURLString:urlString option:@{} completionHandler:nil];
+//}
+//
+////调取系统拨打电话
+//+(void)appOpenTelPhone:(NSString *)phoneNumber needAlert:(BOOL)isNeedAlert
+//{
+//    if ([phoneNumber isKindOfClass:[NSString class]] && phoneNumber.length > 0)
+//    {
+//        NSString *tel = [NSString stringWithFormat:(isNeedAlert ? @"telprompt://%@" : @"tel://%@"), phoneNumber];
+//        [[self class] appOpenURLString:tel option:nil completionHandler:nil];
+//    }
+//}
 
 
 @end
