@@ -216,17 +216,17 @@
 /**
  打开系统通知
  */
-#define SP_APP_OPEN_SYSTEM_SETTING_NOTIFICATION [SPFastPush appOpenSystemSettingNotification];
+//#define SP_APP_OPEN_SYSTEM_SETTING_NOTIFICATION [SPFastPush appOpenSystemSettingNotification];
 
 /**
  打开系统定位
  */
-#define SP_APP_OPEN_SYSTEM_SETTING_LOCATION [SPFastPush appOpenSystemSettingLocation];
+//#define SP_APP_OPEN_SYSTEM_SETTING_LOCATION [SPFastPush appOpenSystemSettingLocation];
 
 /**
  打开系统设置
  */
-#define SP_APP_OPEN_SYSTEM_SETTING [SPFastPush appOpenSystemSetting];
+//#define SP_APP_OPEN_SYSTEM_SETTING [SPFastPush appOpenSystemSetting];
 
 /**
  Call the system call
@@ -236,7 +236,7 @@
  @param isNeedAlert 是否弹出alert询问
  
  */
-#define SP_APP_OPEN_TELPHONE(phoneNumber,isNeedAlert) [SPFastPush appOpenTelPhone:phoneNumber needAlert:isNeedAlert];
+//#define SP_APP_OPEN_TELPHONE(phoneNumber,isNeedAlert) [SPFastPush appOpenTelPhone:phoneNumber needAlert:isNeedAlert];
 
 
 
