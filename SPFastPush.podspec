@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "SPFastPush"
-  s.version      = "1.0.0"
+  s.version      = "1.1.0"
   s.summary      = "Use Macro (Push,Pop,Present,Dismiss) VC,KVC assign parameter,App Open URL.一个vc跳转路由,打开系统及第三方scheme的方法"
 
 

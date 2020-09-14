@@ -304,13 +304,21 @@
         ret = vc;
         if ([ret isKindOfClass:[UINavigationController class]])
         {
-            vc = [(UINavigationController *)vc visibleViewController];
-        } else if ([ret isKindOfClass:[UITabBarController class]])
+            vc = [(UINavigationController *)vc topViewController];
+        }
+        else if ([ret isKindOfClass:[UITabBarController class]])
         {
             vc = [(UITabBarController *)vc selectedViewController];
-        } else
+        }
+        else
         {
-            vc = [vc presentedViewController];
+            UIViewController *tempVC = [vc presentedViewController];
+            //由于ios8.0以后alert方式改了，所以当遇到UIAlertController就舍弃获得UIAlertController
+            if ([tempVC isKindOfClass:[UIAlertController class]]) {
+                vc = nil;
+            }else{
+                vc = tempVC;
+            }
         }
     }
     

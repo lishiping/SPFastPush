@@ -27,12 +27,22 @@
     [pushNextButton addTarget:self action:@selector(pushNext) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:pushNextButton];
     
+//    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5 repeats:NO block:^(NSTimer * _Nonnull timer) {
+//        [self pushNext];
+//    }];
+    
     
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
     backButton.frame = CGRectMake(100, 200, 200, 50);
     [backButton setTitle:@"presentVC" forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(presentVC) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
+    
+    UIButton *alertButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    alertButton.frame = CGRectMake(100, 300, 200, 50);
+    [alertButton setTitle:@"showAlert" forState:UIControlStateNormal];
+    [alertButton addTarget:self action:@selector(showAlert) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:alertButton];
     
 }
 
@@ -47,6 +57,18 @@
     SP_PRESENT_VC(cvc)
 }
 
+-(void)showAlert
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"测试" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确认" style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:okAction];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:cancelAction];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
