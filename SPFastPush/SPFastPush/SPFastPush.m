@@ -349,7 +349,12 @@
     if (!window) {
         if ([app windows].count>0)
         {
-            window = [[app windows] objectAtIndex:0];
+            for (UIWindow *win in app.windows) {
+                if (win.isKeyWindow) {
+                    window = win;
+                    break;
+                }
+            }
         }
     }
     
